@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Analysis of FIFA Players"
+author: "Matthieu Schulz, Hugo Ginoux, Ryan McNamara"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
