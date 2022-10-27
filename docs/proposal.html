@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Proposal | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <title>Chapter 2 Proposal | Analysis of FIFA Players</title>
+  <meta name="description" content="Chapter 2 Proposal | Analysis of FIFA Players" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 2 Proposal | Analysis of FIFA Players" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Proposal | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 2 Proposal | Analysis of FIFA Players" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Matthieu Schulz, Hugo Ginoux, Ryan McNamara" />
 
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -69,7 +69,7 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">Analysis of FIFA Players</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -98,7 +98,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analysis of FIFA Players</a>
           </h1>
         </div>
 
@@ -110,9 +110,31 @@
 <h1><span class="header-section-number">Chapter 2</span> Proposal<a href="proposal.html#proposal" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="research-topic" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Research topic<a href="proposal.html#research-topic" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Football is the most popular sport in the world. There are more than 240 million football players registered to a club and billions of more fans. Every 4 years an international tournament, The World Cup, captivates billions of fans from all countries, making it the most-watched sporting event around the globe. Football fans often try and compare their favorite players and one can easily gather information about their height, weight, salary, goals, etc., however, comparisons between players can become subjective and difficult without an official ranking.</p>
+<p>FIFA, a video game franchise, allows one to simulate football matches (on PS5 and Xbox among others), provides rankings of players and their attributes. The game is released annually by Electronic Arts (EA), with updated players and statistics, is a fan favorite among sports video games. Unsurprisingly, FIFA is the highest-selling sports video game, selling 260 million copies as of 2022 (the next highest is Madden, with over 130 million copies sold).
+Source: <a href="https://www.rookieroad.com/sports/top-10-sports-video-games/" class="uri">https://www.rookieroad.com/sports/top-10-sports-video-games/</a>.</p>
+<p>The amount of data that is contained in one of these games is colossal. For instance, the newest release, FIFA 23, features more than 19,000 players across 700 teams. Each of these players is assigned specific ratings for over 100 attributes, such as speed, strength, mentality, striking, goalkeeping, etc. Moreover, since 2016, the game has included female players and female teams.</p>
+<p>The vast amount of data that is present in one of these games is enough to conduct a variety of compelling analysis and visualizations. The specific ratings given to each player allow us to explore correlations and patterns between variables. A few possible ways to analysis the data (more of this in 2.2) are: seeing how overall rating influences salary, what the height distribution is by position, and how specific players’ ratings changed over time.</p>
+<p>While specific ratings are not available in the real world of football, using the data from the FIFA video games allows us to analyze players and their skills in a more quantitative, rather than qualitative, way. The tremendous interest in football worldwide makes this a fascinating topic with a plethora of insights to uncover.</p>
 </div>
 <div id="data-availability" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Data availability<a href="proposal.html#data-availability" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the purpose of this project, we will be using the following FIFA datasets: <a href="https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/" class="uri">https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/</a></p>
+<p>Electronic Arts Website: <a href="https://www.ea.com/sports" class="uri">https://www.ea.com/sports</a></p>
+<p>FIFA is updated yearly with a new release (i.e. FIFA21 for 2021, FIFA22 for 2022, etc.). Thus, the players, teams, and ratings are kept current with each release. The origin of the data is the Electronic Arts company, which determines the ratings of teams and players and creates the game every year. Although the game is created by Electronic Arts, the datasets we are going to use were curated by a website called sports-statistics.com. In order to gather the data, they simply copied the attributes/values that appear in each new release of the video game.</p>
+<p>A brief explanation of the format of the dataset is given below:</p>
+<p>The dataset that we are going to use for this project is actually a collection of datasets. We have identified datasets documenting important player statistics from the FIFA video games for both the male and female players in the game. Each dataset contains the data for a single release of the FIFA video game (i.e. a particular year). For the male players, we have 8 datasets that correspond to the years 2015 through 2022. For the female players, we have 7 datasets that correspond to the years 2016 through 2022 (female players and teams were introduced in FIFA 2016). Each dataset contains the same number and type of features.</p>
+<p>Each row of the dataset corresponds to a player, and they are ordered in decreasing the overall rating. There are over 100 features (columns) in each of the datasets. A few of the columns are as follows: name, position (both for a club team and national team), foot preference, height, weight, wage, value, overall rating, attribute ratings (i.e. attacking, defending, striking, goalkeeping, speed, dribbling, stamina, mentality, etc.), nationality, etc.</p>
+<p>A few of the columns are formatted in a way that is not optimal for data analysis and visualization, so preprocessing and cleaning will be necessary. For example, for players that play multiple positions, their positions are under the same column and separated with a comma. We obviously will not use every attribute that is present in the dataset, and thus we must clean the columns we wish to use and discard the rest.</p>
+<p>We plan on conducting analyses of player statistics from the year 2022, along with temporal analyses across the releases. In order to do this, we will combine all of the datasets after adding a “year” column. The concatenation should be simple using “rbind.” The dataset for each year is contained in a CSV file, and thus our concatenation will also be saved as a CSV file. With this simple format, we will import the datasets into R using the “read_csv” function in R. Using this function, we will easily be able to view the dataset(s) as a data.frame(s).</p>
+<p>Following are some ideas we have for data exploration:</p>
+<ul>
+<li>We are interested in exploring the height distribution of players based on their position for both men and women. Is height preferred in some positions more than others? In what positions does height provide an advantage for performance?</li>
+<li>We are interested in performing dimensionality reduction using PCA to see if we can identify clusters of players that have similar skill sets. If we color code points based on position, do we see those positions grouped together in the biplot based on their attribute ratings?</li>
+<li>How does overall rating influence player salary? Are there specific attributes that are more desirable and lead to a higher salary?</li>
+<li>How do the salaries compare between men and women? This can be explored in a few ways: comparing all men to all women, comparing within the same country, comparing between counties, and comparing based on the overall rating.</li>
+<li>How do the ratings of our favourite players change over time, both overall and for specific attributes? Which attributes are negatively correlated and which are positively correlated? For example: as age increases, speed might decrease while mentality increases.</li>
+</ul>
 
 </div>
 </div>
@@ -153,7 +175,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/proposal.Rmd",
+"link": "https://github.com/matthieuschulz/fifaplayers/edit/main/proposal.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -161,7 +183,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/proposal.Rmd",
+"link": "https://github.com/matthieuschulz/fifaplayers/blob/main/proposal.Rmd",
 "text": null
 },
 "download": null,
