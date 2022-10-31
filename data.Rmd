@@ -4,5 +4,69 @@
 
 ## Cleaning / transformation
 
+```{r merging_female}
+fem_16 = read.csv('data/female_players_16.csv')
+fem_16$release_year = '2016'
+
+fem_17 = read.csv('data/female_players_17.csv')
+fem_17$release_year = '2017'
+
+fem_18 = read.csv('data/female_players_18.csv')
+fem_18$release_year = '2018'
+
+fem_19 = read.csv('data/female_players_19.csv')
+fem_19$release_year = '2019'
+
+fem_20 = read.csv('data/female_players_20.csv')
+fem_20$release_year = '2020'
+
+fem_21 = read.csv('data/female_players_21.csv')
+fem_21$release_year = '2021'
+
+fem_22 = read.csv('data/female_players_22.csv')
+fem_22$release_year = '2022'
+
+female_players = rbind(fem_16, fem_17, fem_18, fem_19, fem_20, fem_21, fem_22)
+```
+
+
+```{r merging_male}
+male_15 = read.csv('data/players_15.csv')
+male_15$release_year = '2015'
+
+male_16 = read.csv('data/players_16.csv')
+male_16$release_year = '2016'
+
+male_17 = read.csv('data/players_17.csv')
+male_17$release_year = '2017'
+
+male_18 = read.csv('data/players_18.csv')
+male_18$release_year = '2018'
+
+male_19 = read.csv('data/players_19.csv')
+male_19$release_year = '2019'
+
+male_20 = read.csv('data/players_20.csv')
+male_20$release_year = '2020'
+
+male_21 = read.csv('data/players_21.csv')
+male_21$release_year = '2021'
+
+male_22 = read.csv('data/players_22.csv')
+male_22$release_year = '2022'
+
+male_players = rbind(male_15, male_16, male_17, male_18, male_19, male_20, male_21, male_22)
+
+```
+
+```{r merging both}
+female_players$gender = 'F'
+male_players$gender = 'M'
+
+all_players = rbind(female_players, male_players)
+
+head(all_players)
+```
+
 ## Missing value analysis
 
