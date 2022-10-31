@@ -1,1 +1,11 @@
 # Results
+
+## Explaining Wage
+
+```{r wage}
+library(ggplot2)
+
+ggplot(data=male_22)+
+  geom_point(aes(x=overall, y=wage_eur))
+
+```
