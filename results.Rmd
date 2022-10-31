@@ -6,6 +6,7 @@
 library(ggplot2)
 
 ggplot(data=male_22)+
-  geom_point(aes(x=overall, y=wage_eur))
+  geom_point(aes(x=overall, y=wage_eur))+
+  ggtitle('Wages of the players in function of overall rating')
 
 ```
