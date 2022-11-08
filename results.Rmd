@@ -1,12 +1,140 @@
 # Results
 
-## Explaining Wage
+## Explaining Wage by the overall rating
 
-```{r wage}
+```{r wage_male_22}
 library(ggplot2)
 
-ggplot(data=male_22)+
-  geom_point(aes(x=overall, y=wage_eur))+
-  ggtitle('Wages of the players in function of overall rating')
+ggplot(data=male_22, aes(x=overall, y=wage_eur))+
+  geom_point()+
+  geom_smooth()+
+  ggtitle('Wages of the male players in function of overall rating')
 
 ```
+
+Same for females
+
+```{r wage_female_22}
+library(ggplot2)
+
+ggplot(data=fem_22, aes(x=overall, y=wage_eur))+
+  geom_point()+
+  geom_smooth()+
+  ggtitle('Wages of the female players in function of overall rating')
+
+```
+
+## Explaining wages by Linear Regression
+
+```{r linreg}
+library(dplyr)
+library(Lock5withR)
+library(forcats)
+
+male_22_skills = male_22 %>%
+  select(!ends_with('url') &!starts_with('goalkeeping') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!value_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type) %>%
+  filter(club_position != 'GK')
+
+model = lm(wage_eur ~ ., data=male_22_skills)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significative coefficients')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Now without Club name
+
+```{r linreg2}
+male_22_skills_2 = male_22_skills %>%
+  select(!club_name)
+
+model = lm(wage_eur ~ ., data=male_22_skills_2)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significative coefficients')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Without League Name
+
+
+```{r linreg3}
+
+male_22_skills_3 = male_22_skills_2 %>%
+  select(!league_name)
+
+model = lm(wage_eur ~ ., data=male_22_skills_3)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significative coefficients')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Without club position
+
+```{r linreg4}
+
+male_22_skills_4 = male_22_skills_3 %>%
+  select(!club_position)
+
+model = lm(wage_eur ~ ., data=male_22_skills_4)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significative coefficients')+
+  ylab("") +
+  xlim(-2000, 2000)+
+  theme_linedraw()
+```
+
+## Explaining wages by PCA
+
+```{r pca}
+male_22_skills_num = male_22_skills %>%
+  select(!work_rate &!preferred_foot &!club_position &!league_name &!club_name)
+
+male_22_skills_num$club_position = male_22_skills$club_position
+
+male_22_skills_num=male_22_skills_num[complete.cases(male_22_skills_num),]
+
+pca = prcomp(male_22_skills_num[,1:ncol(male_22_skills_num)-1], scale. = T)
+summary(pca)
+```
+
+4 vectors : 80% of the variance
+
+```{r biplot}
+library(redav)
+library(RColorBrewer)
+
+draw_biplot(male_22_skills_num, arrows=FALSE)
+
+```
+
+Put some colors for the positions ?

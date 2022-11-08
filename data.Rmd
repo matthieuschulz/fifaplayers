@@ -2,8 +2,6 @@
 
 ## Sources
 
-## Cleaning / transformation
-
 ```{r merging_female}
 fem_16 = read.csv('data/female_players_16.csv')
 fem_16$release_year = '2016'
@@ -66,6 +64,36 @@ male_players$gender = 'M'
 all_players = rbind(female_players, male_players)
 
 head(all_players)
+```
+
+## Cleaning (from ls to gk, turn into numeric)
+
+```{r cleaning}
+defaultW <- getOption("warn")
+options(warn = -1)
+
+
+clean_col=function(dataset, col){
+  column = dataset[, col]
+  
+  str_to_num = function(x){
+    return(as.numeric(substr(x, 1, 2)))
+  }
+  
+  return(sapply(column, FUN = str_to_num))
+}
+
+
+for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lcm","cm","rcm","rm","lwb","ldm","cdm","rdm","rwb","lb","lcb","cb","rcb","rb","gk")){
+    #print(col)
+    all_players[,col]=clean_col(all_players, col)
+    male_players[,col]=clean_col(male_players, col)
+    female_players[,col]=clean_col(female_players, col)
+    male_22[,col]=clean_col(male_22, col)
+    fem_22[,col]=clean_col(fem_22, col)
+}
+
+
 ```
 
 ## Missing value analysis
