@@ -1,3 +1,54 @@
 # Interactive component
 
+## Load Data
 
+The dataset contains the characteristics of the 19,000 players contained in the football simulation videogame *FIFA 22*. It can be downloaded here : [https://sports-statistics.com/soccer/fifa-2022-dataset-csvs/]
+
+```{r}
+
+df <- a
+head(df)
+```
+
+## Cleaning
+Our goal is to compare the players in a quantitative way. We will therefore remove all the qualitative data from the dataset, including the URLs. One could keep the club informations, but I decided not to because this too informative feature was hiding the real underlying patterns. Finally, I removed the goalkeepers because they were the cause of missing data.
+
+```{r}
+
+data_field <- data_field[data_field['player_positions']!='GK']
+head(data_field)
+
+
+
+```
+
+
+```{r}
+
+useful_cols <- 
+
+
+defaultW <- getOption("warn")
+options(warn = -1)
+
+
+clean_col=function(dataset, col){
+  column = dataset[, col]
+  
+  str_to_num = function(x){
+    return(as.numeric(substr(x, 1, 2)))
+  }
+  
+  return(sapply(column, FUN = str_to_num))
+}
+
+
+for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lcm","cm","rcm","rm","lwb","ldm","cdm","rdm","rwb","lb","lcb","cb","rcb","rb","gk")){
+    #print(col)
+    all_players[,col]=clean_col(all_players, col)
+    male_players[,col]=clean_col(male_players, col)
+    female_players[,col]=clean_col(female_players, col)
+    male_22[,col]=clean_col(male_22, col)
+    fem_22[,col]=clean_col(fem_22, col)
+}
+```
