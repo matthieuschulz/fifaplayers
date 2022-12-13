@@ -2,7 +2,6 @@
 
 ## Research topic
 
-
 The amount of data that is contained in FIFA video games is colossal. For instance, the newest release, FIFA 23, features more than 19,000 players across 700 teams. Each of these players is assigned specific ratings for over 100 attributes, such as speed, strength, mentality, striking, goalkeeping, etc. Moreover, since 2016, the game has included female players and female teams.
 
 The vast amount of data that is present in one of these games is enough to conduct a variety of compelling analysis and visualizations. The specific ratings given to each player allow us to explore correlations and patterns between variables. A few possible ways to analysis the data (more of this in 2.2) are: seeing how overall rating influences salary, what the height distribution is by position, and how specific players' ratings changed over time.
