@@ -391,3 +391,10 @@ hcmap(
 ```
 
 We can see that Spain is by far the best country in 2022, folllowed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
+
+## Analysis of Male vs Female Salaries
+
+### Global Comparison
+
+### Comparison by country
+
