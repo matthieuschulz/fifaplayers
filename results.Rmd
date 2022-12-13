@@ -333,5 +333,61 @@ We can indeed conclude that:
 It is confirmed by a rapid hovering of the graph. The leftmost players (Mbappe, Messi, De Bruyne, Neymar) are known to be very good and very well paid. On the top we have Ruben Dias, Laporte, Van Dijk who are known to be very tall and powerful ; while on the bottom we have Muriel, Insigne or Coman wo are short and fast.
 
 
+## Where are the best players from ?
+
+### All the players
+
+Where is football a popular sport ? Europe and South America for sure, but FIFA shows players coming from all around the world. This map will show where they are from.
 
 
+```{r mapchart}
+library(highcharter)
+
+mapdata = get_data_from_map(download_map_data("custom/world"))
+
+number_of_players_per_nation = data.frame(table(male_22$nationality_name))
+names(number_of_players_per_nation) = c('nation', 'count')
+
+# rename for USA and China
+levels(number_of_players_per_nation$nation)[match('United States', levels(number_of_players_per_nation$nation))] = 'United States of America'
+levels(number_of_players_per_nation$nation)[match('China PR', levels(number_of_players_per_nation$nation))] = 'China'
+
+hcmap(
+  "custom/world",
+  data = number_of_players_per_nation,
+  value = "count",
+  joinBy = c("name", "nation")
+) %>%
+  hc_title(text = "Origin of all the male players in FIFA22")
+
+```
+
+We can see that Brazil, Argentina, Spain, France and Germany are the most represented countries, with around 1000 players each. But even though it is not the national sport, there are about 400 Americans and Chinese present in the game! On the contrary, football is very popular in Africa, but very few African players are represented. It is probably because the African leagues are not yet in the game.
+
+### Top 1000 players
+
+It may be interesting to see if the countries with the most players are also the countries with the best players. For this purpose, we plot the same chart, but with only the 1000 players with the highest overall ranking. 
+
+```{r mapchart2}
+
+male_22_best = male_22[order(male_22$overall, decreasing = TRUE),]
+male_22_best = male_22_best[1:1000,]
+
+number_of_players_per_nation = data.frame(table(male_22_best$nationality_name))
+names(number_of_players_per_nation) = c('nation', 'count')
+
+# rename for USA and China
+levels(number_of_players_per_nation$nation)[match('United States', levels(number_of_players_per_nation$nation))] = 'United States of America'
+levels(number_of_players_per_nation$nation)[match('China PR', levels(number_of_players_per_nation$nation))] = 'China'
+
+hcmap(
+  "custom/world",
+  data = number_of_players_per_nation,
+  value = "count",
+  joinBy = c("name", "nation")
+) %>%
+  hc_title(text = "Origin of the top 1000 male players in FIFA22")
+
+```
+
+We can see that Spain is by far the best country in 2022, folllowed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
