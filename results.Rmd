@@ -1,10 +1,20 @@
 # Results
 
-## Explaining Wage by the overall rating
+```{r load_libraries}
+# load libraries 
+library(tidyverse)
+library(Lock5withR)
+library(forcats)
+library(redav)
+library(RColorBrewer)
+library(stringr)
+```
+
+## Analysis of Player Wages 
+
+### Explaining Wage by the overall rating
 
 ```{r wage_male_22}
-library(ggplot2)
-
 ggplot(data=male_22, aes(x=overall, y=wage_eur))+
   geom_point()+
   geom_smooth()+
@@ -15,8 +25,6 @@ ggplot(data=male_22, aes(x=overall, y=wage_eur))+
 Same for females
 
 ```{r wage_female_22}
-library(ggplot2)
-
 ggplot(data=fem_22, aes(x=overall, y=wage_eur))+
   geom_point()+
   geom_smooth()+
@@ -24,13 +32,9 @@ ggplot(data=fem_22, aes(x=overall, y=wage_eur))+
 
 ```
 
-## Explaining wages by Linear Regression
+### Explaining wages by Linear Regression
 
 ```{r linreg}
-library(dplyr)
-library(Lock5withR)
-library(forcats)
-
 male_22_skills = male_22 %>%
   select(!ends_with('url') &!starts_with('goalkeeping') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!value_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type) %>%
   filter(club_position != 'GK')
@@ -73,7 +77,6 @@ Without League Name
 
 
 ```{r linreg3}
-
 male_22_skills_3 = male_22_skills_2 %>%
   select(!league_name)
 
@@ -113,7 +116,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   theme_linedraw()
 ```
 
-## Explaining wages by PCA
+### Explaining wages by PCA
 
 ```{r pca}
 male_22_skills_num = male_22_skills %>%
@@ -130,11 +133,96 @@ summary(pca)
 4 vectors : 80% of the variance
 
 ```{r biplot}
-library(redav)
-library(RColorBrewer)
-
 draw_biplot(male_22_skills_num, arrows=FALSE)
 
 ```
 
 Put some colors for the positions ?
+
+## Analysis of Player Heights 
+
+### Overall Distribution of Male and Female Heights 
+
+We are first going to look at the overall distribution of players' heights for both male and female. We obviously expect the median height of the men to be larger than the median height of women. For this analysis, we will only use the most recent year of data we have, specifically 2022. 
+
+```{r density_heights}
+# make density plots 
+all_players %>%
+  filter(release_year == 2022) %>%
+  ggplot(aes(x = height_cm, fill = gender)) + 
+  geom_density(alpha = 0.7, size = 1.25) + 
+  scale_fill_manual(
+    labels = c('F' = 'Female', 'M' = 'Male'), 
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Height (cm)', 
+    y = 'Density', 
+    fill = 'Gender', 
+    title = 'Distribution of Player Heights'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20), 
+    legend.key.size = unit(0.75, 'cm'), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(face = 'bold', size = 15)
+  )
+```
+
+We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. 
+
+### Normality of Player Heights 
+
+Let's create a Q-Q plot for the males and females to see if their heights are normally distributed. 
+
+```{r height_normality}
+all_players %>%
+  filter(release_year == 2022) %>%
+  ggplot(aes(color = gender)) + 
+  geom_qq_line(aes(sample = height_cm), inherit.aes = FALSE) +
+  geom_qq(aes(sample = height_cm)) + 
+  facet_wrap(~ gender, labeller = labeller(gender = c('F' = 'Female', 'M' = 'Male'))) + 
+  scale_color_manual(
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Theoretical', 
+    y = 'Sample', 
+    title = 'Q-Q Plot of Player Heights'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20),
+    legend.position = 'none', 
+    strip.text = element_text(size = 15, face = 'bold')
+  )
+
+```
+
+### Heatmap of Median Player Height Per Position 
+
+```{r height_heatmap}
+all_players_adjusted = all_players %>%
+  separate_rows(player_positions)
+
+median_heights = all_players_adjusted %>%
+  filter(release_year == 2022) %>%
+  group_by(gender, player_positions) %>%
+  summarize(
+    med_height = median(height_cm)
+  )
+
+median_heights %>%
+  ggplot(aes(x = gender, y = player_positions, fill = med_height)) + 
+  geom_tile(color = 'white') + 
+  scale_fill_gradient(low = 'white', high = 'red') +
+  coord_equal() + 
+  theme_classic()
+```
