@@ -176,34 +176,50 @@ all_players_adjusted %>%
 ```
 We again can see that goalkeepers and defensive players tend to be the tallest. The distribution for each position for the male players appears to be normally distributed. Interestingly, there seems to be some bimodality and uniform distribution of the heights for some of the female player positions. For example, there seems to be two groups of players for the RB position, one who are taller and ones who are shorter. For positions like CAM, RW, ST, and CM, the distribution seems almost uniform, with heights ranging over a 15 or 20 cm range. It seems that the heights of players might not be as crucial of an attribute for the women's game as speed, for example. The women's game is often played more on the ground than in the air, so speed and quickness could be more advantageous than height regardless of the position (except goalkeeper and some defensive positions). 
 
-## Analysis of Player Wages 
+## Explaining Player Wages
 
-### Explaining Wage by the overall rating
+In this part, we want to identify what features are the most important to predict a players salary. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers. 
+
+### Explaining wages by a simple scatter plot
+
+First, let's have an insight by plotting the wages in function of the "overall" rating (the global level of a player) and his age.
 
 ```{r wage_male_22}
-ggplot(data=male_22, aes(x=overall, y=wage_eur))+
-  geom_point()+
-  geom_smooth()+
-  ggtitle('Wages of the male players in function of overall rating')
+library(plotly)
 
+male_22_field = male_22[male_22$player_positions != 'GK' & male_22$age < 42 & !is.na(male_22$league_level) & !is.na(male_22$value_eur),] %>%
+  select(!starts_with('goalkeeping') & !gk)
+
+fig <- plot_ly(
+  male_22_field, 
+  type='scatter', 
+  mode='markers',
+  x = ~overall, 
+  y = ~wage_eur,
+  color = ~age,
+  text = ~short_name
+  )%>% 
+  layout(title = 'Wages in function of Overall rating')
+
+fig
 ```
 
-Same for females
-
-```{r wage_female_22}
-ggplot(data=fem_22, aes(x=overall, y=wage_eur))+
-  geom_point()+
-  geom_smooth()+
-  ggtitle('Wages of the female players in function of overall rating')
-
-```
+We can see from this graph that the wages grow with the overall rating of the player, that sounds natural. On the contrary, the age does not look like having a strong influence on the wages.
+Now, let's perform a linear regression to compare the influence of each feature.
 
 ### Explaining wages by Linear Regression
 
+We are trying to explain the wages given the data available in the other columns through a linear regression. When done, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
+
+#### Regression 1
+
 ```{r linreg}
-male_22_skills = male_22 %>%
-  select(!ends_with('url') &!starts_with('goalkeeping') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!value_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type) %>%
-  filter(club_position != 'GK')
+library(dplyr)
+library(Lock5withR)
+library(forcats)
+
+male_22_skills = male_22_field %>%
+  select(!ends_with('url') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!value_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type)
 
 model = lm(wage_eur ~ ., data=male_22_skills)
 
@@ -214,12 +230,16 @@ results = head(results, 30)
 
 ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   geom_point(color='blue')+
-  ggtitle('Most significative coefficients')+
+  ggtitle('Most significant coefficients', subtitle='All the features')+
   ylab("") +
   theme_linedraw()
 ```
 
-Now without Club name
+We can see that the club name is clearly the best indicator to estimate the salary of a player. Indeed, clubs like PSG or Manchester City are well known to be extremely rich, because they benefit from the support of a country (Qatar and Saudi Arabia). Therefore, they are able to pay their players a lot, and this seems to have a much higher influence than the actual level of the player.
+Once this observation is done, let's remove the feature "club_name" to observe the influence of the others.
+
+
+#### Regression 2
 
 ```{r linreg2}
 male_22_skills_2 = male_22_skills %>%
@@ -234,13 +254,15 @@ results = head(results, 30)
 
 ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   geom_point(color='blue')+
-  ggtitle('Most significative coefficients')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name')+
   ylab("") +
   theme_linedraw()
 ```
 
-Without League Name
+Now, we can observe that features with the highest influence come from "league_name", that is to say the country the player plays in. Indeed, the English Premier League (and the other big european championships) is famous for getting huge amounts of money from broadcasting rights and therefore overpaying its players.
+Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
 
+#### Regression 3
 
 ```{r linreg3}
 male_22_skills_3 = male_22_skills_2 %>%
@@ -255,12 +277,15 @@ results = head(results, 30)
 
 ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   geom_point(color='blue')+
-  ggtitle('Most significative coefficients')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name and league_name')+
   ylab("") +
   theme_linedraw()
 ```
 
-Without club position
+Here, we can notice that the position of the player becomes to most important feature. For instance, Center Forwards (CF) are much better paid than Right Defensive Midfielders (RDM), probably because the position is more "spectacular" and televisual. We can also remark that the international reputation is a very important feature to explain the salary. It can be explained by the fact that football is an open competitive market: if a player with a good reputation is not well paid, he is likely to get offers from other clubs and change during the summer.
+Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
+
+#### Regression 4
 
 ```{r linreg4}
 
@@ -276,38 +301,264 @@ results = head(results, 30)
 
 ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   geom_point(color='blue')+
-  ggtitle('Most significative coefficients')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name, league_name and club_position')+
   ylab("") +
   xlim(-2000, 2000)+
   theme_linedraw()
 ```
 
-### Explaining wages by PCA
+## Explaining Player Values
 
-```{r pca}
-male_22_skills_num = male_22_skills %>%
-  select(!work_rate &!preferred_foot &!club_position &!league_name &!club_name)
+Now, we want to identify what features are the most important to predict a players value in the transfer market.
 
-male_22_skills_num$club_position = male_22_skills$club_position
+### Explaining values by a simple scatter plot
 
-male_22_skills_num=male_22_skills_num[complete.cases(male_22_skills_num),]
+First, let's have an insight by plotting the values in function of the "overall" rating and his age.
 
-pca = prcomp(male_22_skills_num[,1:ncol(male_22_skills_num)-1], scale. = T)
-summary(pca)
+```{r val_male_22}
+library(plotly)
+
+fig <- plot_ly(
+  male_22_field, 
+  type='scatter', 
+  mode='markers',
+  x = ~overall, 
+  y = ~value_eur,
+  color = ~age,
+  text = ~short_name
+  )%>% 
+  layout(title = 'Wages in function of Overall rating')
+
+fig
+
 ```
 
-4 vectors : 80% of the variance
+We can see from this graph that the values grow with the overall rating of the player, that sounds natural (the more gifted a player, the higher his value). But unlike the wages study, here the age seems to have a strong influence on the values! Indeed, for the same overall rating, younger players clearly have a higher value.
 
-```{r biplot}
-draw_biplot(male_22_skills_num, arrows=FALSE)
+Now, let's perform a linear regression to compare the influence of each feature.
+
+### Explaining values by Linear Regression
+
+We are trying to explain the values given the data available in the other columns through a linear regression. When done, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
+
+#### Regression 1
+
+```{r linregbis}
+library(dplyr)
+library(Lock5withR)
+library(forcats)
+
+male_22_skills = male_22_field %>%
+  select(!ends_with('url') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!wage_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type)
+
+model = lm(value_eur ~ ., data=male_22_skills)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='All the features')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Like for the last study, the club name is the best way to estimate the value of a player. Indeed, it is known that the most prestigious clubs are able to attract the most valuable players.
+Once this observation is done, let's remove the feature "club_name" to observe the influence of the others.
+
+
+#### Regression 2
+
+```{r linregbis2}
+male_22_skills_2 = male_22_skills %>%
+  select(!club_name)
+
+model = lm(value_eur ~ ., data=male_22_skills_2)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Now, like before, we can observe that features with the highest influence come from "league_name", that is to say the country the player plays in. It is interesting to notice that the first league is not the English Premier League, but the Indian Super League, that is not a prestigious championship! It means that this league is probably a pool of young talents with high value, leaving the country when they reach a certain fame.
+Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
+
+
+```{r linregbis3}
+
+male_22_skills_3 = male_22_skills_2 %>%
+  select(!league_name)
+
+model = lm(value_eur ~ ., data=male_22_skills_3)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name and league_name')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Here, we can notice that the position of the player becomes to most important feature. Center Forwards may be the highest paid position, it is not the one with the highest value! Left Wingers (LW) are more valuable.
+Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
+
+```{r linregbis4}
+
+male_22_skills_4 = male_22_skills_3 %>%
+  select(!club_position)
+
+model = lm(value_eur ~ ., data=male_22_skills_4)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name, league_name and club_position')+
+  ylab("") +
+  xlim(-2000000, 2000000)+
+  theme_linedraw()
+```
+Finally, we are left with only the pure skills and personality of the player. Once again, the international reputation was important, but we can now observe that ratings like "overall" or "movement_balance" are also good indicators. Finally, your age seems to strongly negatively impact your value, as we explained earlier. 
+
+
+## Clustering the players
+
+In this part, let's try to cluster the players into 3 groups, visualize them in the 2D plane generated by the 2 principal components of the PCA and infer some interesting thoughts.
+
+```{r std_scaler}
+
+male_22_clust = male_22_skills_4 %>%
+  select(!work_rate &!preferred_foot) %>%
+  scale()
+
+km = kmeans(male_22_clust, 3)
+pca = prcomp(male_22_clust)
+
+coords <- pca$x[,1:2]
+coords <- data.frame(coords) %>%
+  mutate(cluster = factor(km$cluster), name = male_22_field$short_name)
+
+fig <- plot_ly(
+  coords, 
+  type='scatter', 
+  mode='markers',
+  x = ~PC1, 
+  y = ~PC2,
+  color = ~cluster,
+  text = ~name
+  )%>% 
+  layout(title = 'Players in the 2D Principal Components plane')
+
+fig
+```
+
+We can see that the clusters are very well separated in the pricipal components plane (explaining 70% of the variance). By hovering a little bit, we realize that the well-known players are in the leftmost cluster (number 3). Probably the left-to-right vector (pca_1) conveys the meaning of "fame" or "talent". Let's have a look on the centroids of the clusters to be sure.
+
+```{r centroids}
+
+centers_scaled = as.data.frame(km$centers)
+
+centers = data.frame(matrix(ncol = length(names(centers_scaled)), nrow = 0))
+names(centers) = names(centers_scaled)
+
+for(i in 1:3){
+  center = centers_scaled[i,] * attr(male_22_clust, 'scaled:scale') + attr(male_22_clust, 'scaled:center')
+  centers = rbind(centers, center)
+}
+
+centers
 
 ```
 
-Put some colors for the positions ?
+The third cluster (blue) has a higher "overall", "value" and "wage" than the others. It is therefore constituted by the good and famous players. The main difference between the 2 other clusters is the height and the weight: the second cluster (red) being taller and heavier than the first cluster (green). We can therefore guess that the bottom-to-top vector (pca_2) conveys a meaning of corpulence or, maybe, of position.
+
+Finally, let's have a look at the decomposition of the PCA vectors on the original features.
+
+```{r pca_decomp}
+components = as.data.frame(pca$rotation[, c('PC1','PC2')])
+components
+
+```
+
+We can indeed conclude that:
+
+* pca_1 gives a bigger and negative weight to the skills and salary
+* pca_2 gives a bigger weight to height and weight
+
+It is confirmed by a rapid hovering of the graph. The leftmost players (Mbappe, Messi, De Bruyne, Neymar) are known to be very good and very well paid. On the top we have Ruben Dias, Laporte, Van Dijk who are known to be very tall and powerful ; while on the bottom we have Muriel, Insigne or Coman wo are short and fast.
 
 
+## Where are the best players from ?
+
+### All the players
+
+Where is football a popular sport ? Europe and South America for sure, but FIFA shows players coming from all around the world. This map will show where they are from.
 
 
+```{r mapchart}
+library(highcharter)
 
+mapdata = get_data_from_map(download_map_data("custom/world"))
 
+number_of_players_per_nation = data.frame(table(male_22$nationality_name))
+names(number_of_players_per_nation) = c('nation', 'count')
 
+# rename for USA and China
+levels(number_of_players_per_nation$nation)[match('United States', levels(number_of_players_per_nation$nation))] = 'United States of America'
+levels(number_of_players_per_nation$nation)[match('China PR', levels(number_of_players_per_nation$nation))] = 'China'
+
+hcmap(
+  "custom/world",
+  data = number_of_players_per_nation,
+  value = "count",
+  joinBy = c("name", "nation")
+) %>%
+  hc_title(text = "Origin of all the male players in FIFA22")
+
+```
+
+We can see that Brazil, Argentina, Spain, France and Germany are the most represented countries, with around 1000 players each. But even though it is not the national sport, there are about 400 Americans and Chinese present in the game! On the contrary, football is very popular in Africa, but very few African players are represented. It is probably because the African leagues are not yet in the game.
+
+### Top 1000 players
+
+It may be interesting to see if the countries with the most players are also the countries with the best players. For this purpose, we plot the same chart, but with only the 1000 players with the highest overall ranking. 
+
+```{r mapchart2}
+
+male_22_best = male_22[order(male_22$overall, decreasing = TRUE),]
+male_22_best = male_22_best[1:1000,]
+
+number_of_players_per_nation = data.frame(table(male_22_best$nationality_name))
+names(number_of_players_per_nation) = c('nation', 'count')
+
+# rename for USA and China
+levels(number_of_players_per_nation$nation)[match('United States', levels(number_of_players_per_nation$nation))] = 'United States of America'
+levels(number_of_players_per_nation$nation)[match('China PR', levels(number_of_players_per_nation$nation))] = 'China'
+
+hcmap(
+  "custom/world",
+  data = number_of_players_per_nation,
+  value = "count",
+  joinBy = c("name", "nation")
+) %>%
+  hc_title(text = "Origin of the top 1000 male players in FIFA22")
+
+```
+
+We can see that Spain is by far the best country in 2022, folllowed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
