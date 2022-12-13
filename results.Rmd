@@ -5,7 +5,6 @@
 library(tidyverse)
 library(Lock5withR)
 library(forcats)
-library(redav)
 library(RColorBrewer)
 library(stringr)
 library(ggridges)
