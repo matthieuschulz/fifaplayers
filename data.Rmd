@@ -2,6 +2,8 @@
 
 ## Sources
 
+The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single dataframe.
+
 ```{r merging_female}
 fem_16 = read.csv('data/female_players_16.csv')
 fem_16$release_year = '2016'
@@ -67,6 +69,8 @@ head(all_players)
 ```
 
 ## Cleaning (from ls to gk, turn into numeric)
+
+Some quantitative features are encoded under the form '55+3' for instance. We should therefore treat these values by keeping only the 2 first characters and turning them into integers.
 
 ```{r cleaning}
 defaultW <- getOption("warn")
