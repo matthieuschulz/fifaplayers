@@ -2,11 +2,11 @@
 
 ## Explaining Player Wages
 
-In this part, we want to identify what features are the most important to predict a players salary. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers. 
+In this part, we want to identify what features are the most important to predict a player's salary. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers. 
 
 ### Explaining wages by a simple scatter plot
 
-First, let's have an insight by plotting the wages in function of the "overall" rating (the global level of a player) and his age.
+First, let's have an insight by plotting annual wages in function of the "overall" rating (the global level of a player) and his age.
 
 ```{r wage_male_22}
 library(plotly)
@@ -19,11 +19,11 @@ fig <- plot_ly(
   type='scatter', 
   mode='markers',
   x = ~overall, 
-  y = ~wage_eur,
+  y = ~wage_eur*52,
   color = ~age,
   text = ~short_name
   )%>% 
-  layout(title = 'Wages in function of Overall rating')
+  layout(title = 'Annual Wages in function of Overall rating')
 
 fig
 
@@ -155,7 +155,7 @@ fig <- plot_ly(
   color = ~age,
   text = ~short_name
   )%>% 
-  layout(title = 'Wages in function of Overall rating')
+  layout(title = 'Player Market Value in function of Overall rating')
 
 fig
 
@@ -394,6 +394,9 @@ We can see that Spain is by far the best country in 2022, folllowed by Brazil, A
 
 ## Analysis of Male vs Female Salaries
 
+In this part, we want to identify how salaries between men and women compare. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers. 
+
+How do the salaries compare between men and women? This can be explored in a few ways: comparing all men to all women, comparing within the same country, comparing between counties, and comparing based on the overall rating.
 ### Global Comparison
 
 ### Comparison by country
