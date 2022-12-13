@@ -14,10 +14,15 @@ library(plotly)
 male_22_field = male_22[male_22$player_positions != 'GK' & male_22$age < 42,]
 
 fig <- plot_ly(
-  male_22_field, x = ~overall, y = ~wage_eur,
-  text = ~paste("Name: ", short_name),
-  color = ~age
-) %>% layout(title = 'Wages in function of Overall rating')
+  male_22_field, 
+  type='scatter', 
+  mode='markers',
+  x = ~overall, 
+  y = ~wage_eur,
+  color = ~age,
+  text = ~short_name
+  )%>% 
+  layout(title = 'Wages in function of Overall rating')
 
 fig
 
@@ -83,6 +88,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
 Now, we can observe that features with the highest influence come from "league_name", that is to say the country the player plays in. Indeed, the English Premier League (and the other big european championships) is famous for getting huge amounts of money from broadcasting rights and therefore overpaying its players.
 Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
 
+#### Regression 3
 
 ```{r linreg3}
 
@@ -106,6 +112,8 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
 Here, we can notice that the position of the player becomes to most important feature. For instance, Center Forwards (CF) are much better paid than Right Defensive Midfielders (RDM), probably because the position is more "spectacular" and televisual. We can also remark that the international reputation is a very important feature to explain the salary. It can be explained by the fact that football is an open competitive market: if a player with a good reputation is not well paid, he is likely to get offers from other clubs and change during the summer.
 Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
 
+#### Regression 4
+
 ```{r linreg4}
 
 male_22_skills_4 = male_22_skills_3 %>%
@@ -125,4 +133,134 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   xlim(-2000, 2000)+
   theme_linedraw()
 ```
-Finally, we are left with only the pure skills and personality of the player. We said that the international reputation was important, but we can now observe that ratings like "overall" or "skill_moves" are also good indicators. The fact that "Preferred_foot_right" is important seems to show that right footed players are more paid than left footed! Finally, your age seems to slightly negatively impact your wages. 
+
+
+## Explaining Player Values
+
+Now, we want to identify what features are the most important to predict a players value in the transfer market.
+
+### Explaining values by a simple scatter plot
+
+First, let's have an insight by plotting the values in function of the "overall" rating and his age.
+
+```{r wage_male_22}
+library(plotly)
+
+fig <- plot_ly(
+  male_22_field, 
+  type='scatter', 
+  mode='markers',
+  x = ~overall, 
+  y = ~value_eur,
+  color = ~age,
+  text = ~short_name
+  )%>% 
+  layout(title = 'Wages in function of Overall rating')
+
+fig
+
+```
+
+We can see from this graph that the values grow with the overall rating of the player, that sounds natural (the more gifted a player, the higher his value). But unlike the wages study, here the age seems to have a strong influence on the values! Indeed, for the same overall rating, younger players clearly have a higher value.
+
+Now, let's perform a linear regression to compare the influence of each feature.
+
+### Explaining values by Linear Regression
+
+We are trying to explain the values given the data available in the other columns through a linear regression. When done, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
+
+#### Regression 1
+
+```{r linreg}
+library(dplyr)
+library(Lock5withR)
+library(forcats)
+
+male_22_skills = male_22 %>%
+  select(!ends_with('url') &!starts_with('goalkeeping') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!wage_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type) %>%
+  filter(club_position != 'GK')
+
+model = lm(value_eur ~ ., data=male_22_skills)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='All the features')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Like for the last study, the club name is the best way to estimate the value of a player. Indeed, it is known that the most prestigious clubs are able to attract the most valuable players.
+Once this observation is done, let's remove the feature "club_name" to observe the influence of the others.
+
+
+#### Regression 2
+
+```{r linreg2}
+male_22_skills_2 = male_22_skills %>%
+  select(!club_name)
+
+model = lm(value_eur ~ ., data=male_22_skills_2)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Now, like before, we can observe that features with the highest influence come from "league_name", that is to say the country the player plays in. It is interesting to notice that the first league is not the English Premier League, but the Indian Super League, that is not a prestigious championship! It means that this league is probably a pool of young talents with high value, leaving the country when they reach a certain fame.
+Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
+
+
+```{r linreg3}
+
+male_22_skills_3 = male_22_skills_2 %>%
+  select(!league_name)
+
+model = lm(value_eur ~ ., data=male_22_skills_3)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name and league_name')+
+  ylab("") +
+  theme_linedraw()
+```
+
+Here, we can notice that the position of the player becomes to most important feature. Center Forwards may be the highest paid position, it is not the one with the highest value! Left Wingers (LW) are more valuable.
+Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
+
+```{r linreg4}
+
+male_22_skills_4 = male_22_skills_3 %>%
+  select(!club_position)
+
+model = lm(value_eur ~ ., data=male_22_skills_4)
+
+results = as.data.frame(summary(model)$coefficients)
+results$Skill=rownames(results)
+results = results[order(results[,'Pr(>|t|)']),]
+results = head(results, 30)
+
+ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
+  geom_point(color='blue')+
+  ggtitle('Most significant coefficients', subtitle='Without club_name, league_name and club_position')+
+  ylab("") +
+  xlim(-2000000, 2000000)+
+  theme_linedraw()
+```
+Finally, we are left with only the pure skills and personality of the player. Once again, the international reputation was important, but we can now observe that ratings like "overall" or "movement_balance" are also good indicators. Finally, your age seems to strongly negatively impact your value, as we explained earlier. 
