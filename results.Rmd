@@ -8,7 +8,173 @@ library(forcats)
 library(redav)
 library(RColorBrewer)
 library(stringr)
+library(ggridges)
+library(ggalluvial)
 ```
+
+## Analysis of Player Heights 
+
+### Overall Distribution of Male and Female Heights 
+
+We are first going to look at the overall distribution of players' heights for both male and female. We obviously expect the median height of the men to be larger than the median height of women. For this analysis, we will only use the most recent year of data we have, specifically 2022. 
+
+```{r density_heights}
+# make density plots 
+all_players %>%
+  filter(release_year == 2022) %>%
+  ggplot(aes(x = height_cm, fill = gender)) + 
+  geom_density(alpha = 0.7, size = 1.25) + 
+  scale_fill_manual(
+    labels = c('F' = 'Female', 'M' = 'Male'), 
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Height (cm)', 
+    y = 'Density', 
+    fill = 'Gender', 
+    title = 'Distribution of Player Heights'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20), 
+    legend.key.size = unit(0.75, 'cm'), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(face = 'bold', size = 15)
+  )
+
+median_male = all_players %>%
+  filter(gender == 'M') 
+median_male = median(median_male$height_cm)
+
+median_female = all_players %>%
+  filter(gender == 'F') 
+median_female = median(median_female$height_cm)
+
+paste0('Median Male Player Height: ', median_male, ' cm')
+paste0('Median Female Player Height: ', median_female, ' cm')
+```
+
+We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. The median male player height is 181 cm, while the median female player height is 170 cm. 
+
+### Normality of Player Heights 
+
+Let's create a Q-Q plot for the males and females to confirm our hypothesis that the heights of each gender are normally distributed. 
+
+```{r height_normality}
+all_players %>%
+  filter(release_year == 2022) %>%
+  ggplot(aes(color = gender)) + 
+  geom_qq_line(aes(sample = height_cm), inherit.aes = FALSE) +
+  geom_qq(aes(sample = height_cm)) + 
+  facet_wrap(~ gender, labeller = labeller(gender = c('F' = 'Female', 'M' = 'Male'))) + 
+  scale_color_manual(
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Theoretical', 
+    y = 'Sample', 
+    title = 'Q-Q Plot of Player Heights'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20),
+    legend.position = 'none', 
+    strip.text = element_text(size = 15, face = 'bold')
+  )
+
+```
+
+We can see that both the female and male players' heights are approximately normally distributed. The sample heights align very well with the theoretical heights based on a normal distribution. We can not do a Shapiro-Wilk test in this case since we have far more than 5,000 samples, but we can clearly see the approximate normal distribution from the Q-Q plot. This is not surprising, as we know that heights for the general population are normally distributed. 
+
+### Median Player Height per Position  
+
+Let's get to the more interesting part of the analysis. We will visualize the median heights of both female and male players per position to see if there are some positions for which height is more of an asset than for others. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the heigh caluclation for multiple positions. 
+
+```{r height_heatmap}
+all_players_adjusted = all_players %>%
+  separate_rows(player_positions)
+
+median_heights = all_players_adjusted %>%
+  filter(release_year == 2022) %>%
+  group_by(gender, player_positions) %>%
+  summarize(
+    med_height = median(height_cm)
+  )
+
+order_vect = median_heights %>%
+  filter(gender == 'M') %>%
+  arrange(med_height)
+order_vect = order_vect$player_positions
+
+median_heights$player_positions = fct_relevel(median_heights$player_positions, order_vect)
+
+median_heights %>%
+  ggplot(aes(x = med_height, y = player_positions, color = gender)) + 
+  geom_point(size = 3) + 
+  scale_color_manual(
+    labels = c('F' = 'Female', 'M' = 'Male'), 
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Height (cm)', 
+    y = 'Position', 
+    color = 'Gender', 
+    title = 'Median Height per Player Position'
+  ) + 
+  theme_classic() + 
+  theme(
+    panel.grid.major.y = element_line(color = 'lightgrey', linetype = 'dashed'), 
+    panel.grid.major.x = element_line(color = 'lightgrey', linetype = 'dashed'),
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text.x = element_text(size = 12), 
+    axis.text.y = element_text(size = 9),
+    plot.title = element_text(face = 'bold', size = 20, hjust = 0.5), 
+    legend.key.size = unit(0.75, 'cm'), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(face = 'bold', size = 15)
+  )
+```
+The Cleveland Dot Plot above provides many interesting insights. First, we can confirm the above conclusion that the male players are taller than the female players. Further, we can see that this is true for every single position. 
+
+For both the males and the females, the tallest player on the pitch tends to be the goalkeeper. The goalkeeper is in charge of protecting the net, thus, it makes sense for a goalkeeper to be tall in order to "cover" as much of the goal as possible. We also see that the 2nd, 3rd, and 4th tallest positions for the men are the center back (CB), striker (ST), and center defensive midfielder (CDM). These positions are also among the tallest for the women as well. The tallest players (besides the goalkeeper), tend to be the defensive players (center back (CB), center defensive midfielder (CDM), left back (LB), left wing back (LWB), etc.). This also is in agreement with what we know about football; the defensive players must be able to win headers to protect the goal, which height helps. Strikers are among the only offensive players to have large heights, for both the men and the women. Strikers tend to play in the box, meaning they must compete against the tall defensive players for headers. The smallest positions on the pitch tend to be the midfielders and offensive wing players (CAM, LM, RM, RW, LF, CF, etc.). Again, this makes sense. The midfielders and offensive wing players play in the middle and edges of the pitch. They need to be fast with the ball and be able to deliver crosses into the box. Thus, height is not as crucial as speed is for these positions. 
+
+### Distribution of Player Height per Position 
+
+Now, let's take a look at the distribution of player heights per position. With the Cleveland Dot Plot we can see the median player height, but using a Ridgeline plot will also us to identify the modality of heights for each position. 
+
+```{r ridges_plot}
+all_players_adjusted %>%
+  ggplot(aes(x = height_cm, y = fct_reorder(player_positions, height_cm, median), fill = gender)) + 
+  geom_density_ridges2(size = 1, alpha = 0.7, scale = 1.2) + 
+  scale_fill_manual(
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) +
+  facet_wrap(~ gender, labeller = labeller(gender = c('F' = 'Female', 'M' = 'Male'))) + 
+  labs(
+    x = 'Height (cm)', 
+    y = 'Position',
+    title = 'Height Distribution by Position'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text.x = element_text(size = 12), 
+    axis.text.y = element_text(size = 9),
+    plot.title = element_text(face = 'bold', size = 20, hjust = 0.5),
+    legend.position = 'none', 
+    panel.grid.major.y = element_line(color = 'lightgrey', linetype = 'dashed'), 
+    strip.text = element_text(size = 15, face = 'bold')
+  )
+```
+We again can see that goalkeepers and defensive players tend to be the tallest. The distribution for each position for the male players appears to be normally distributed. Interestingly, there seems to be some bimodality and uniform distribution of the heights for some of the female player positions. For example, there seems to be two groups of players for the RB position, one who are taller and ones who are shorter. For positions like CAM, RW, ST, and CM, the distribution seems almost uniform, with heights ranging over a 15 or 20 cm range. It seems that the heights of players might not be as crucial of an attribute for the women's game as speed, for example. The women's game is often played more on the ground than in the air, so speed and quickness could be more advantageous than height regardless of the position (except goalkeeper and some defensive positions). 
 
 ## Analysis of Player Wages 
 
@@ -139,90 +305,9 @@ draw_biplot(male_22_skills_num, arrows=FALSE)
 
 Put some colors for the positions ?
 
-## Analysis of Player Heights 
 
-### Overall Distribution of Male and Female Heights 
 
-We are first going to look at the overall distribution of players' heights for both male and female. We obviously expect the median height of the men to be larger than the median height of women. For this analysis, we will only use the most recent year of data we have, specifically 2022. 
 
-```{r density_heights}
-# make density plots 
-all_players %>%
-  filter(release_year == 2022) %>%
-  ggplot(aes(x = height_cm, fill = gender)) + 
-  geom_density(alpha = 0.7, size = 1.25) + 
-  scale_fill_manual(
-    labels = c('F' = 'Female', 'M' = 'Male'), 
-    values = c('F' = 'pink2', 'M' = 'blue')
-  ) + 
-  labs(
-    x = 'Height (cm)', 
-    y = 'Density', 
-    fill = 'Gender', 
-    title = 'Distribution of Player Heights'
-  ) + 
-  theme_classic() + 
-  theme(
-    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
-    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
-    axis.text = element_text(size = 12), 
-    plot.title = element_text(face = 'bold', size = 20), 
-    legend.key.size = unit(0.75, 'cm'), 
-    legend.text = element_text(size = 12), 
-    legend.title = element_text(face = 'bold', size = 15)
-  )
-```
 
-We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. 
 
-### Normality of Player Heights 
 
-Let's create a Q-Q plot for the males and females to see if their heights are normally distributed. 
-
-```{r height_normality}
-all_players %>%
-  filter(release_year == 2022) %>%
-  ggplot(aes(color = gender)) + 
-  geom_qq_line(aes(sample = height_cm), inherit.aes = FALSE) +
-  geom_qq(aes(sample = height_cm)) + 
-  facet_wrap(~ gender, labeller = labeller(gender = c('F' = 'Female', 'M' = 'Male'))) + 
-  scale_color_manual(
-    values = c('F' = 'pink2', 'M' = 'blue')
-  ) + 
-  labs(
-    x = 'Theoretical', 
-    y = 'Sample', 
-    title = 'Q-Q Plot of Player Heights'
-  ) + 
-  theme_classic() + 
-  theme(
-    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
-    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
-    axis.text = element_text(size = 12), 
-    plot.title = element_text(face = 'bold', size = 20),
-    legend.position = 'none', 
-    strip.text = element_text(size = 15, face = 'bold')
-  )
-
-```
-
-### Heatmap of Median Player Height Per Position 
-
-```{r height_heatmap}
-all_players_adjusted = all_players %>%
-  separate_rows(player_positions)
-
-median_heights = all_players_adjusted %>%
-  filter(release_year == 2022) %>%
-  group_by(gender, player_positions) %>%
-  summarize(
-    med_height = median(height_cm)
-  )
-
-median_heights %>%
-  ggplot(aes(x = gender, y = player_positions, fill = med_height)) + 
-  geom_tile(color = 'white') + 
-  scale_fill_gradient(low = 'white', high = 'red') +
-  coord_equal() + 
-  theme_classic()
-```
