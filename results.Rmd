@@ -11,7 +11,7 @@ First, let's have an insight by plotting the wages in function of the "overall" 
 ```{r wage_male_22}
 library(plotly)
 
-male_22_field = male_22[male_22$player_positions != 'GK' & male_22$age < 42 & !is.na(male_22$league_level),] %>%
+male_22_field = male_22[male_22$player_positions != 'GK' & male_22$age < 42 & !is.na(male_22$league_level) & !is.na(male_22$value_eur),] %>%
   select(!starts_with('goalkeeping') & !gk)
 
 fig <- plot_ly(
@@ -143,7 +143,7 @@ Now, we want to identify what features are the most important to predict a playe
 
 First, let's have an insight by plotting the values in function of the "overall" rating and his age.
 
-```{r wage_male_22}
+```{r val_male_22}
 library(plotly)
 
 fig <- plot_ly(
@@ -171,14 +171,13 @@ We are trying to explain the values given the data available in the other column
 
 #### Regression 1
 
-```{r linreg}
+```{r linregbis}
 library(dplyr)
 library(Lock5withR)
 library(forcats)
 
 male_22_skills = male_22_field %>%
-  select(!ends_with('url') &!starts_with('goalkeeping') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!wage_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type) %>%
-  filter(club_position != 'GK')
+  select(!ends_with('url') & !release_year & !player_traits & !player_tags & !release_clause_eur & !real_face & !starts_with('nation') & !club_contract_valid_until & !club_joined & !club_loaned_from & !club_team_id &!dob &!wage_eur &!player_positions &!long_name &!short_name &! sofifa_id &!body_type)
 
 model = lm(value_eur ~ ., data=male_22_skills)
 
@@ -200,7 +199,7 @@ Once this observation is done, let's remove the feature "club_name" to observe t
 
 #### Regression 2
 
-```{r linreg2}
+```{r linregbis2}
 male_22_skills_2 = male_22_skills %>%
   select(!club_name)
 
@@ -222,7 +221,7 @@ Now, like before, we can observe that features with the highest influence come f
 Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
 
 
-```{r linreg3}
+```{r linregbis3}
 
 male_22_skills_3 = male_22_skills_2 %>%
   select(!league_name)
@@ -244,7 +243,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
 Here, we can notice that the position of the player becomes to most important feature. Center Forwards may be the highest paid position, it is not the one with the highest value! Left Wingers (LW) are more valuable.
 Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
 
-```{r linreg4}
+```{r linregbis4}
 
 male_22_skills_4 = male_22_skills_3 %>%
   select(!club_position)
@@ -332,3 +331,7 @@ We can indeed conclude that:
 * pca_2 gives a bigger weight to height and weight
 
 It is confirmed by a rapid hovering of the graph. The leftmost players (Mbappe, Messi, De Bruyne, Neymar) are known to be very good and very well paid. On the top we have Ruben Dias, Laporte, Van Dijk who are known to be very tall and powerful ; while on the bottom we have Muriel, Insigne or Coman wo are short and fast.
+
+
+
+
