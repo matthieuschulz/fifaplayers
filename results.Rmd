@@ -603,18 +603,40 @@ all_players_new %>%
 ```
 We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. The median male player height is 181 cm, while the median female player height is 170 cm. 
 
-###
+### Key Statistics Comparison of Annual Wage for Male and Female Players
 ```{r}
 median_male = all_players_new %>%
   filter(gender == 'M') 
-median_male = mean(median_male$wage_eur)
+median_male = median(median_male$wage_eur*52, na.rm = TRUE)
 
 median_female = all_players_new %>%
   filter(gender == 'F') 
-median_female = mean(median_female$wage_eur)
+median_female = mean(median_female$wage_eur*52, na.rm = TRUE)
 
-paste0('Median Male Player Salary: ', median_male, 'euro')
-paste0('Median Female Player Salary: ', median_female, ' euro')
+paste0('Median Male Player Salary: ', median_male, ' €')
+paste0('Median Female Player Salary: ', median_female, ' €')
+
+max_male = all_players_new %>%
+  filter(gender == 'M') 
+max_male = max(max_male$wage_eur*52, na.rm = TRUE)
+
+max_female = all_players_new %>%
+  filter(gender == 'F') 
+max_female = max(max_female$wage_eur*52, na.rm = TRUE)
+
+paste0('Max Male Player Salary: ', max_male, ' €')
+paste0('Max Female Player Salary: ', max_female, ' €')
+
+min_male = all_players_new %>%
+  filter(gender == 'M') 
+min_male = min(min_male$wage_eur*52, na.rm = TRUE)
+
+min_female = all_players_new %>%
+  filter(gender == 'F') 
+min_female = min(min_female$wage_eur*52, na.rm = TRUE)
+
+paste0('Min Male Player Salary: ', min_male, ' €')
+paste0('Min Female Player Salary: ', min_female, ' €')
 
 ```
 
@@ -631,12 +653,12 @@ median_salaries = all_players_adjusted %>%
   filter(release_year == 2022) %>%
   group_by(gender, player_positions) %>%
   summarize(
-    med_salary = median(wa)
+    med_salary = median(wage_eur)
   )
 
 order_vect = median_salaries %>%
   filter(gender == 'M') %>%
-  arrange(med_salarry)
+  arrange(med_salary)
 order_vect = order_vect$player_positions
 
 median_salaries$player_positions = fct_relevel(median_salaries$player_positions, order_vect)
