@@ -183,7 +183,7 @@
 <h1><span class="header-section-number">Chapter 3</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single dataframe.</p>
+<p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single data.frame.</p>
 <pre><code>##   sofifa_id                                                 player_url
 ## 1    226324        https://sofifa.com/player/226324/carli-lloyd/160002
 ## 2    226328      https://sofifa.com/player/226328/megan-rapinoe/160002
@@ -373,6 +373,124 @@
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s start by checking how many missing values are in each column.</p>
+<pre><code>##              nation_team_id        nation_jersey_number 
+##                      133635                      133635 
+##           goalkeeping_speed          release_clause_eur 
+##                      128249                       57780 
+##         mentality_composure                        pace 
+##                       32026                       16074 
+##                    shooting                     passing 
+##                       16074                       16074 
+##                   dribbling                   defending 
+##                       16074                       16074 
+##                      physic                league_level 
+##                       16074                        4259 
+##                   value_eur                club_team_id 
+##                        4095                        3874 
+##          club_jersey_number   club_contract_valid_until 
+##                        3874                        3874 
+##                    wage_eur                   club_name 
+##                        3820                        2244 
+##                 league_name               club_position 
+##                        2244                        2244 
+##            club_loaned_from                 club_joined 
+##                        2244                        2244 
+##               club_logo_url               club_flag_url 
+##                        2244                        2244 
+##                          gk                   sofifa_id 
+##                         189                           0 
+##                  player_url                  short_name 
+##                           0                           0 
+##                   long_name            player_positions 
+##                           0                           0 
+##                     overall                   potential 
+##                           0                           0 
+##                         age                         dob 
+##                           0                           0 
+##                   height_cm                   weight_kg 
+##                           0                           0 
+##              nationality_id            nationality_name 
+##                           0                           0 
+##             nation_position              preferred_foot 
+##                           0                           0 
+##                   weak_foot                 skill_moves 
+##                           0                           0 
+##    international_reputation                   work_rate 
+##                           0                           0 
+##                   body_type                   real_face 
+##                           0                           0 
+##                 player_tags               player_traits 
+##                           0                           0 
+##          attacking_crossing         attacking_finishing 
+##                           0                           0 
+##  attacking_heading_accuracy     attacking_short_passing 
+##                           0                           0 
+##           attacking_volleys             skill_dribbling 
+##                           0                           0 
+##                 skill_curve           skill_fk_accuracy 
+##                           0                           0 
+##          skill_long_passing          skill_ball_control 
+##                           0                           0 
+##       movement_acceleration       movement_sprint_speed 
+##                           0                           0 
+##            movement_agility          movement_reactions 
+##                           0                           0 
+##            movement_balance            power_shot_power 
+##                           0                           0 
+##               power_jumping               power_stamina 
+##                           0                           0 
+##              power_strength            power_long_shots 
+##                           0                           0 
+##        mentality_aggression     mentality_interceptions 
+##                           0                           0 
+##       mentality_positioning            mentality_vision 
+##                           0                           0 
+##         mentality_penalties defending_marking_awareness 
+##                           0                           0 
+##   defending_standing_tackle    defending_sliding_tackle 
+##                           0                           0 
+##          goalkeeping_diving        goalkeeping_handling 
+##                           0                           0 
+##         goalkeeping_kicking     goalkeeping_positioning 
+##                           0                           0 
+##        goalkeeping_reflexes                          ls 
+##                           0                           0 
+##                          st                          rs 
+##                           0                           0 
+##                          lw                          lf 
+##                           0                           0 
+##                          cf                          rf 
+##                           0                           0 
+##                          rw                         lam 
+##                           0                           0 
+##                         cam                         ram 
+##                           0                           0 
+##                          lm                         lcm 
+##                           0                           0 
+##                          cm                         rcm 
+##                           0                           0 
+##                          rm                         lwb 
+##                           0                           0 
+##                         ldm                         cdm 
+##                           0                           0 
+##                         rdm                         rwb 
+##                           0                           0 
+##                          lb                         lcb 
+##                           0                           0 
+##                          cb                         rcb 
+##                           0                           0 
+##                          rb             player_face_url 
+##                           0                           0 
+##             nation_logo_url             nation_flag_url 
+##                           0                           0 
+##                release_year                      gender 
+##                           0                           0</code></pre>
+<p>We see that we have a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis.</p>
+<p>We can’t visualize these missing values with a heatmap because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead.</p>
+<p><img src="finalproj_files/figure-html/missing_val_hm-1.png" width="672" /></p>
+<p>We see that we have a lot of missing values for <strong>nation_jersey_number</strong>, <strong>nation_team_id</strong>, and <strong>goalkeeping_speed</strong>. We discussed these missing values above. We also have some missing values for other attributes such as <strong>defending</strong>, <strong>dribbling</strong>, <strong>pace</strong>, etc. This is because some players are not given certain ratings, usually because they do not do those things (i.e. goalkeeping). Some of these values might also be missing because they were not attributes in the earlier years of the game. Either way, we will pay close attention to these missing values if we are going to be using these variables for our analysis.</p>
+<p>We wanted to try and use the <strong>missing_values</strong> function from the <strong>redav</strong> package, but there are far too many columns in our dataset for the plots to be meaningful or look clean. Thus, we will stick with this simple analysis for now and pay close attention to the missing values.</p>
 
 </div>
 </div>
