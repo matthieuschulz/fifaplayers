@@ -23,7 +23,7 @@
 <meta name="author" content="Matthieu Schulz, Hugo Ginoux, Ryan McNamara" />
 
 
-<meta name="date" content="2022-10-31" />
+<meta name="date" content="2022-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,12 +81,34 @@
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#sources"><i class="fa fa-check"></i><b>3.1</b> Sources</a></li>
-<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-from-ls-to-gk-turn-into-numeric"><i class="fa fa-check"></i><b>3.2</b> Cleaning (from ls to gk, turn into numeric)</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#explaining-wage"><i class="fa fa-check"></i><b>4.1</b> Explaining Wage</a></li>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#analysis-of-player-heights"><i class="fa fa-check"></i><b>4.1</b> Analysis of Player Heights</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="results.html"><a href="results.html#overall-distribution-of-male-and-female-heights"><i class="fa fa-check"></i><b>4.1.1</b> Overall Distribution of Male and Female Heights</a></li>
+<li class="chapter" data-level="4.1.2" data-path="results.html"><a href="results.html#normality-of-player-heights"><i class="fa fa-check"></i><b>4.1.2</b> Normality of Player Heights</a></li>
+<li class="chapter" data-level="4.1.3" data-path="results.html"><a href="results.html#median-player-height-per-position"><i class="fa fa-check"></i><b>4.1.3</b> Median Player Height per Position</a></li>
+<li class="chapter" data-level="4.1.4" data-path="results.html"><a href="results.html#distribution-of-player-height-per-position"><i class="fa fa-check"></i><b>4.1.4</b> Distribution of Player Height per Position</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#explaining-player-wages"><i class="fa fa-check"></i><b>4.2</b> Explaining Player Wages</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="results.html"><a href="results.html#explaining-wages-by-a-simple-scatter-plot"><i class="fa fa-check"></i><b>4.2.1</b> Explaining wages by a simple scatter plot</a></li>
+<li class="chapter" data-level="4.2.2" data-path="results.html"><a href="results.html#explaining-wages-by-linear-regression"><i class="fa fa-check"></i><b>4.2.2</b> Explaining wages by Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#explaining-player-values"><i class="fa fa-check"></i><b>4.3</b> Explaining Player Values</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="results.html"><a href="results.html#explaining-values-by-a-simple-scatter-plot"><i class="fa fa-check"></i><b>4.3.1</b> Explaining values by a simple scatter plot</a></li>
+<li class="chapter" data-level="4.3.2" data-path="results.html"><a href="results.html#explaining-values-by-linear-regression"><i class="fa fa-check"></i><b>4.3.2</b> Explaining values by Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#clustering-the-players"><i class="fa fa-check"></i><b>4.4</b> Clustering the players</a></li>
+<li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#where-are-the-best-players-from"><i class="fa fa-check"></i><b>4.5</b> Where are the best players from ?</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="results.html"><a href="results.html#all-the-players"><i class="fa fa-check"></i><b>4.5.1</b> All the players</a></li>
+<li class="chapter" data-level="4.5.2" data-path="results.html"><a href="results.html#top-1000-players"><i class="fa fa-check"></i><b>4.5.2</b> Top 1000 players</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
@@ -111,6 +133,91 @@
             <section class="normal" id="section-">
 <div id="interactive-component" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Interactive component<a href="interactive-component.html#interactive-component" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>
+Select a gender
+</p>
+<p><input type="radio" id="male" name="gender" value="male" checked>
+<label for="male">Male</label><br>
+<input type="radio" id="female" name="gender" value="female">
+<label for="female">Female</label><br></p>
+<p>
+Select a year
+</p>
+<p><input type="radio" id="16" name="year" value="16">
+<label for="16">2016</label><br>
+<input type="radio" id="17" name="year" value="17">
+<label for="17">2017</label><br>
+<input type="radio" id="18" name="year" value="18">
+<label for="18">2018</label><br>
+<input type="radio" id="19" name="year" value="19">
+<label for="19">2019</label><br>
+<input type="radio" id="20" name="year" value="20">
+<label for="20">2020</label><br>
+<input type="radio" id="21" name="year" value="21">
+<label for="21">2021</label><br>
+<input type="radio" id="22" name="year" value="22" checked>
+<label for="22">2022</label><br></p>
+<svg>
+</svg>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+
+const gender = d3.select('input[name="gender"]:checked').property("value");
+const year = d3.select('input[name="year"]:checked').property("value");
+
+const data = [0.2, 0.4, 0.5, 0.1]
+const w = 800
+const h = 500
+const hp = 400
+const m = 50
+
+const svg = d3.select("svg")
+  .attr("width", w)
+  .attr("height", h);
+
+svg.append("rect")
+    .attr("x", m)
+    .attr("y", (1-data[0])*hp)
+    .attr("width", m)
+    .attr("height", (1-data[0])*hp)
+    .attr("fill", "blue");
+    
+svg.append("text")
+    .attr("x", m)
+    .attr("y", h)
+    .attr("text-anchor", "start")
+    .text("<25")
+    
+svg.append("rect")
+    .attr("x", 3*m)
+    .attr("y", (1-data[1])*hp)
+    .attr("width", m)
+    .attr("height", (1-data[1])*hp)
+    .attr("fill", "purple");
+    
+svg.append("text")
+    .attr("x", 3*m)
+    .attr("y", h)
+    .attr("text-anchor", "start")
+    .text("between 25 and 30")
+    
+svg.append("rect")
+    .attr("x", 5*m)
+    .attr("y", (1-data[2])*hp)
+    .attr("width", m)
+    .attr("height", (1-data[2])*hp)
+    .attr("fill", "red");
+    
+svg.append("text")
+    .attr("x", 5*m)
+    .attr("y", h)
+    .attr("text-anchor", "start")
+    .text("between 30 and 35")
+    
+
+
+
+</script>
 
 </div>
             </section>
