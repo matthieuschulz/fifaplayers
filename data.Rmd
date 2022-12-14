@@ -105,6 +105,8 @@ for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lc
 Let's start by checking how many missing values are in each column. 
 
 ```{r count_missing}
+library(tidyverse)
+# get counts of missing values
 colSums(is.na(all_players)) %>%
   sort(decreasing = TRUE)
 ```
