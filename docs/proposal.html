@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Proposal | Analysis of FIFA Players</title>
   <meta name="description" content="Chapter 2 Proposal | Analysis of FIFA Players" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Proposal | Analysis of FIFA Players" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Matthieu Schulz, Hugo Ginoux, Ryan McNamara" />
 
 
-<meta name="date" content="2022-10-31" />
+<meta name="date" content="2022-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,54 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/proj4js-2.3.15/proj4.js"></script>
+<link href="libs/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="libs/highcharts-9.3.1/highcharts.js"></script>
+<script src="libs/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="libs/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="libs/highcharts-9.3.1/modules/stock.js"></script>
+<script src="libs/highcharts-9.3.1/modules/map.js"></script>
+<script src="libs/highcharts-9.3.1/modules/data.js"></script>
+<script src="libs/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="libs/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="libs/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="libs/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="libs/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="libs/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="libs/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="libs/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="libs/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="libs/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="libs/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="libs/highcharts-9.3.1/modules/organization.js"></script>
+<script src="libs/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="libs/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="libs/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="libs/highcharts-9.3.1/modules/vector.js"></script>
+<script src="libs/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="libs/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="libs/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="libs/highcharts-9.3.1/modules/venn.js"></script>
+<script src="libs/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="libs/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="libs/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="libs/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="libs/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="libs/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="libs/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="libs/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="libs/highcharts-9.3.1/custom/reset.js"></script>
+<script src="libs/highcharts-9.3.1/modules/boost.js"></script>
+<script src="libs/highchart-binding-0.9.4/highchart.js"></script>
 
 
 
@@ -81,12 +129,38 @@
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#sources"><i class="fa fa-check"></i><b>3.1</b> Sources</a></li>
-<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-from-ls-to-gk-turn-into-numeric"><i class="fa fa-check"></i><b>3.2</b> Cleaning (from ls to gk, turn into numeric)</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#explaining-wage"><i class="fa fa-check"></i><b>4.1</b> Explaining Wage</a></li>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#analysis-of-player-heights"><i class="fa fa-check"></i><b>4.1</b> Analysis of Player Heights</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="results.html"><a href="results.html#overall-distribution-of-male-and-female-heights"><i class="fa fa-check"></i><b>4.1.1</b> Overall Distribution of Male and Female Heights</a></li>
+<li class="chapter" data-level="4.1.2" data-path="results.html"><a href="results.html#normality-of-player-heights"><i class="fa fa-check"></i><b>4.1.2</b> Normality of Player Heights</a></li>
+<li class="chapter" data-level="4.1.3" data-path="results.html"><a href="results.html#median-player-height-per-position"><i class="fa fa-check"></i><b>4.1.3</b> Median Player Height per Position</a></li>
+<li class="chapter" data-level="4.1.4" data-path="results.html"><a href="results.html#distribution-of-player-height-per-position"><i class="fa fa-check"></i><b>4.1.4</b> Distribution of Player Height per Position</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#explaining-player-wages"><i class="fa fa-check"></i><b>4.2</b> Explaining Player Wages</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="results.html"><a href="results.html#explaining-wages-by-a-simple-scatter-plot"><i class="fa fa-check"></i><b>4.2.1</b> Explaining wages by a simple scatter plot</a></li>
+<li class="chapter" data-level="4.2.2" data-path="results.html"><a href="results.html#explaining-wages-by-linear-regression"><i class="fa fa-check"></i><b>4.2.2</b> Explaining wages by Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#explaining-player-values"><i class="fa fa-check"></i><b>4.3</b> Explaining Player Values</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="results.html"><a href="results.html#explaining-values-by-a-simple-scatter-plot"><i class="fa fa-check"></i><b>4.3.1</b> Explaining values by a simple scatter plot</a></li>
+<li class="chapter" data-level="4.3.2" data-path="results.html"><a href="results.html#explaining-values-by-linear-regression"><i class="fa fa-check"></i><b>4.3.2</b> Explaining values by Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#clustering-the-players"><i class="fa fa-check"></i><b>4.4</b> Clustering the players</a></li>
+<li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#where-are-the-best-players-from"><i class="fa fa-check"></i><b>4.5</b> Where are the best players from ?</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="results.html"><a href="results.html#all-the-players"><i class="fa fa-check"></i><b>4.5.1</b> All the players</a></li>
+<li class="chapter" data-level="4.5.2" data-path="results.html"><a href="results.html#top-1000-players"><i class="fa fa-check"></i><b>4.5.2</b> Top 1000 players</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#analysis-of-male-vs-female-salaries"><i class="fa fa-check"></i><b>4.6</b> Analysis of Male vs Female Salaries</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="results.html"><a href="results.html#comparison-by-country"><i class="fa fa-check"></i><b>4.6.1</b> Comparison by country</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
@@ -113,17 +187,14 @@
 <h1><span class="header-section-number">Chapter 2</span> Proposal<a href="proposal.html#proposal" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="research-topic" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Research topic<a href="proposal.html#research-topic" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Football is the most popular sport in the world. There are more than 240 million football players registered to a club and billions of more fans. Every 4 years an international tournament, The World Cup, captivates billions of fans from all countries, making it the most-watched sporting event around the globe. Football fans often try and compare their favorite players and one can easily gather information about their height, weight, salary, goals, etc., however, comparisons between players can become subjective and difficult without an official ranking.</p>
-<p>FIFA, a video game franchise, allows one to simulate football matches (on PS5 and Xbox among others), provides rankings of players and their attributes. The game is released annually by Electronic Arts (EA), with updated players and statistics, is a fan favorite among sports video games. Unsurprisingly, FIFA is the highest-selling sports video game, selling 260 million copies as of 2022 (the next highest is Madden, with over 130 million copies sold) (<a href="https://www.rookieroad.com/sports/top-10-sports-video-games/">source</a>).</p>
-<p>The amount of data that is contained in one of these games is colossal. For instance, the newest release, FIFA 23, features more than 19,000 players across 700 teams. Each of these players is assigned specific ratings for over 100 attributes, such as speed, strength, mentality, striking, goalkeeping, etc. Moreover, since 2016, the game has included female players and female teams.</p>
+<p>The amount of data that is contained in FIFA video games is colossal. For instance, the newest release, FIFA 23, features more than 19,000 players across 700 teams. Each of these players is assigned specific ratings for over 100 attributes, such as speed, strength, mentality, striking, goalkeeping, etc. Moreover, since 2016, the game has included female players and female teams.</p>
 <p>The vast amount of data that is present in one of these games is enough to conduct a variety of compelling analysis and visualizations. The specific ratings given to each player allow us to explore correlations and patterns between variables. A few possible ways to analysis the data (more of this in 2.2) are: seeing how overall rating influences salary, what the height distribution is by position, and how specific players’ ratings changed over time.</p>
-<p>While specific ratings are not available in the real world of football, using the data from the FIFA video games allows us to analyze players and their skills in a more quantitative, rather than qualitative, way. The tremendous interest in football worldwide makes this a fascinating topic with a plethora of insights to uncover.</p>
 </div>
 <div id="data-availability" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Data availability<a href="proposal.html#data-availability" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For the purpose of this project, we will be using the following FIFA datasets: <a href="https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/" class="uri">https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/</a></p>
 <p>Electronic Arts Website: <a href="https://www.ea.com/sports" class="uri">https://www.ea.com/sports</a></p>
-<p>FIFA is updated yearly with a new release (i.e. FIFA21 for 2021, FIFA22 for 2022, etc.). Thus, the players, teams, and ratings are kept current with each release. The origin of the data is the Electronic Arts company, which determines the ratings of teams and players and creates the game every year. Although the game is created by Electronic Arts, the datasets we are going to use were curated by a website called sports-statistics.com. More specifically, our datasets were created by Thomas Nielson, a writer for the website. In order to create the datasets, the author scraped the data for each player from a website called [sofifa.com] (sofifa.com). This website keeps track of each players attributes/ratings for each release of the FIFA video game. The data we are using is scraped directly off of this website with minimal preprocessing/cleaning.</p>
+<p>FIFA is updated yearly with a new release (i.e. FIFA 21 for 2021, FIFA 22 for 2022, etc.). Thus, the players, teams, and ratings are kept current with each release. The origin of the data is the Electronic Arts company, which determines the ratings of teams and players and creates the game every year. Although the game is created by Electronic Arts, the datasets we are going to use were curated by a website called sports-statistics.com. More specifically, our datasets were created by Thomas Nielson, a writer for the website. In order to create the datasets, the author scraped the data for each player from a website called <a href="sofifa.com">sofifa.com</a>. This website keeps track of each players attributes/ratings for each release of the FIFA video game. The data we are using is scraped directly off of this website with minimal preprocessing/cleaning.</p>
 <p>The website sports-statistics.com appears to be a reliable website that provides datasets for different sports, including basketball, baseball, football, and soccer. Our specific datasets were included in a short article written by Thomas Nielson, who writes for the website and has published many other sports datasets. We found multiple other websites (including <a href="https://data.world/datasets/fifa">Data World</a> and <a href="https://www.kaggle.com/datasets/stefanoleone992/fifa-21-complete-player-dataset">Kaggle</a>) that provided datasets of FIFA players. However, these datasets did not include multiple years, were filtered and preprocessed already, or were not consistently udated. If we have any questions or concerns about our datasets, we can directly contact the website and Thomas Nielson via a “Contact Us” link on their website.</p>
 <p>A brief explanation of the format of the dataset is given below:</p>
 <p>The dataset that we are going to use for this project is actually a collection of datasets. We have identified datasets documenting important player statistics from the FIFA video games for both the male and female players in the game. Each dataset contains the data for a single release of the FIFA video game (i.e. a particular year). For the male players, we have 8 datasets that correspond to the years 2015 through 2022. For the female players, we have 7 datasets that correspond to the years 2016 through 2022 (female players and teams were introduced in FIFA 2016). Each dataset contains the same number and type of features.</p>

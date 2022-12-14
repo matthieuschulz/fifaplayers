@@ -5,7 +5,6 @@
 library(tidyverse)
 library(Lock5withR)
 library(forcats)
-library(redav)
 library(RColorBrewer)
 library(stringr)
 library(ggridges)
@@ -94,7 +93,7 @@ We can see that both the female and male players' heights are approximately norm
 
 ### Median Player Height per Position  
 
-Let's get to the more interesting part of the analysis. We will visualize the median heights of both female and male players per position to see if there are some positions for which height is more of an asset than for others. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the heigh caluclation for multiple positions. 
+Let's get to the more interesting part of the analysis. We will visualize the median heights of both female and male players per position to see if there are some positions for which height is more of an asset than for others. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the height calculation for multiple positions. 
 
 ```{r height_heatmap}
 all_players_adjusted = all_players %>%
@@ -178,7 +177,7 @@ We again can see that goalkeepers and defensive players tend to be the tallest. 
 
 ## Explaining Player Wages
 
-In this part, we want to identify what features are the most important to predict a players salary. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers. 
+In this part, we want to identify what features are the most important to predict a player's salary. The scope of the study will focus on the male players during the year 2021-22, excluding the goalkeepers.
 
 ### Explaining wages by a simple scatter plot
 
@@ -195,11 +194,11 @@ fig <- plot_ly(
   type='scatter', 
   mode='markers',
   x = ~overall, 
-  y = ~wage_eur,
+  y = ~wage_eur*52,
   color = ~age,
   text = ~short_name
   )%>% 
-  layout(title = 'Wages in function of Overall rating')
+  layout(title = 'Annual Wages in function of Overall rating')
 
 fig
 ```
@@ -327,7 +326,7 @@ fig <- plot_ly(
   color = ~age,
   text = ~short_name
   )%>% 
-  layout(title = 'Wages in function of Overall rating')
+  layout(title = 'Player Market Value in function of Overall rating')
 
 fig
 
@@ -561,4 +560,112 @@ hcmap(
 
 ```
 
-We can see that Spain is by far the best country in 2022, folllowed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
+We can see that Spain is by far the best country in 2022, followed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
+
+## Analysis of Male vs Female Salaries
+
+In this part, we want to identify how salaries between men and women compare. The scope of the study will focus on the male players during the year 2021-22.
+
+### Global Comparison
+
+We are first going to look at the overall distribution of players' annual salaries for both male and female. We obviously expect the median salary of the men to be larger than the median height of women. 
+
+```{r}
+# make density plots 
+
+all_players_new = all_players[!is.na(male_22$wage_eur) & !is.na(male_22$value_eur),]
+
+all_players_new %>%
+  filter(release_year == 2022) %>%
+  ggplot(aes(x = log2(wage_eur*52), fill = gender)) + 
+  geom_density(alpha = 0.7, size = 0.75) + 
+  facet_wrap(~ gender, labeller = labeller(gender = c('F' = 'Female', 'M' = 'Male'))) + 
+  scale_fill_manual(
+    labels = c('F' = 'Female', 'M' = 'Male'), 
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Annual Wages', 
+    y = 'Density', 
+    fill = 'Gender', 
+    title = 'Distribution of Player Salaries'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 12, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 12, vjust = 2),
+    axis.text = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20), 
+    legend.key.size = unit(0.75, 'cm'), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(face = 'bold', size = 15)
+  )
+```
+We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. The median male player height is 181 cm, while the median female player height is 170 cm. 
+
+###
+```{r}
+median_male = all_players_new %>%
+  filter(gender == 'M') 
+median_male = mean(median_male$wage_eur)
+
+median_female = all_players_new %>%
+  filter(gender == 'F') 
+median_female = mean(median_female$wage_eur)
+
+paste0('Median Male Player Salary: ', median_male, 'euro')
+paste0('Median Female Player Salary: ', median_female, ' euro')
+
+```
+
+
+### Median Player Salaries per Position  
+
+We will now compare the median salaries of both female and male players per position to see if there are some positions with an advantage in terms of salary. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the salary calculations for multiple positions. 
+
+```{r}
+all_players_adjusted = all_players %>%
+  separate_rows(player_positions)
+
+median_salaries = all_players_adjusted %>%
+  filter(release_year == 2022) %>%
+  group_by(gender, player_positions) %>%
+  summarize(
+    med_salary = median(wa)
+  )
+
+order_vect = median_salaries %>%
+  filter(gender == 'M') %>%
+  arrange(med_salarry)
+order_vect = order_vect$player_positions
+
+median_salaries$player_positions = fct_relevel(median_salaries$player_positions, order_vect)
+
+median_salaries %>%
+  ggplot(aes(x = med_height, y = player_positions, color = gender)) + 
+  geom_point(size = 3) + 
+  scale_color_manual(
+    labels = c('F' = 'Female', 'M' = 'Male'), 
+    values = c('F' = 'pink2', 'M' = 'blue')
+  ) + 
+  labs(
+    x = 'Height (cm)', 
+    y = 'Position', 
+    color = 'Gender', 
+    title = 'Median Salary per Player Position'
+  ) + 
+  theme_classic() + 
+  theme(
+    panel.grid.major.y = element_line(color = 'lightgrey', linetype = 'dashed'), 
+    panel.grid.major.x = element_line(color = 'lightgrey', linetype = 'dashed'),
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text.x = element_text(size = 12), 
+    axis.text.y = element_text(size = 9),
+    plot.title = element_text(face = 'bold', size = 20, hjust = 0.5), 
+    legend.key.size = unit(0.75, 'cm'), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(face = 'bold', size = 15)
+  )
+```
+The Cleveland Dot Plot above provides many interesting insights.XXX
