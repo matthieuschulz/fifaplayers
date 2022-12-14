@@ -118,7 +118,7 @@ for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lc
 
 ```
 
-Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use "select" to grab the ones that are necessary for our later analyses. 
+Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions, we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use "select" to grab the ones that are necessary for our later analysis. 
 
 ## Missing value analysis
 
@@ -131,9 +131,9 @@ colSums(is.na(all_players)) %>%
   sort(decreasing = TRUE)
 ```
 
-We see that we have a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis. 
+There are a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis. 
 
-We can't visualize these missing values with a heatmap because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead. 
+We can't visualize these missing values with a heat map because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead. 
 
 ```{r missing_val_hm}
 library(forcats)
@@ -196,9 +196,4 @@ all_players_filtered = all_players %>%
 redav::plot_missing(all_players_filtered)
 ```
 
-There aren't many patterns that emerge when looking at the missing values within our dataset. However, we can see that the most common pattern of missing values is missing the **nation_team_id**, **nation_jersey_number**, and **goalkeeping_speed** attributes. It makes sense that if a player does not play for the national team, then they will be missing the **nation_team_id** and the **nation_jersey_number** columns (which is also pattern 4). Most of the players in our dataset will be missing any of the attributes that are associated with being a goalkeeper, since a majority of the players are not goalkeepers and their attributes are very specific to them. We also see that we have very few complete rows within the dataset, again because almost every player has some attribute that is not assigned to them since they do not play the position or require that attribute. All in all, there are no striking patterns that emerge from the data regarding the missing values. Since the data contains a number of features that are URL's, team/nation ids, etc., we expect there to be a large number of missing values. This is no issue, however, for our analysis because we will only be using what is required for each of our plots. We have also decided not to completely remove any column, as there is no need. We will simply be selecting the columns we want to use during our analysis of the dataset. If we were instead training a machine learning model, we obviously would have to remove the columns that would disrupt our analysis. Our goal of this section was to concatenate the datasets and preprocess the attribute ratings so that they are in a form that we can use.  
-
-
-
-
-
+There aren't many patterns that emerge when looking at the missing values within our dataset. However, we can see that the most common pattern of missing values is missing the **nation_team_id**, **nation_jersey_number**, and **goalkeeping_speed** attributes. It makes sense that if a player does not play for the national team, then they will be missing the **nation_team_id** and the **nation_jersey_number** columns (which is also pattern 4). Most of the players in our dataset will be missing any of the attributes that are associated with being a goalkeeper, since a majority of the players are not goalkeepers and their attributes are very specific to them. We also see that we have very few complete rows within the dataset, again because almost every player has some attribute that is not assigned to them since they do not play the position or require that attribute. All in all, there are no striking patterns that emerge from the data regarding the missing values. Since the data contains a number of features that are URL's, team/nation ids, etc., we expect there to be a large number of missing values. This is no issue, however, for our analysis because we will only be using what is required for each of our plots. We have also decided not to completely remove any column, as there is no need. We will simply be selecting the columns we want to use during our analysis of the dataset. If we were instead training a machine learning model, we obviously would have to remove the columns that would disrupt our analysis. Our goal of this section was to concatenate the datasets and preprocess the attribute ratings so that they are in a form that we can use.

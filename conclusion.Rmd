@@ -1,2 +1,7 @@
 # Conclusion
 
+In conclusion, throughout this project we have been able to gather many insights about the FIFA dataset and get answers to the different questions we asked ourselves at the beginning. 
+
+Discuss: 
+
+main takeaways of your exploration, limitations, future directions, lessons learned.
