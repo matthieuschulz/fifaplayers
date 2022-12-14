@@ -5,7 +5,6 @@
 library(tidyverse)
 library(Lock5withR)
 library(forcats)
-library(redav)
 library(RColorBrewer)
 library(stringr)
 library(ggridges)
@@ -45,14 +44,17 @@ all_players %>%
     legend.title = element_text(face = 'bold', size = 15)
   )
 
+# get the median heights for the male players 
 median_male = all_players %>%
   filter(gender == 'M') 
 median_male = median(median_male$height_cm)
 
+# get the median heights for the female players 
 median_female = all_players %>%
   filter(gender == 'F') 
 median_female = median(median_female$height_cm)
 
+# print the median male and female heights
 paste0('Median Male Player Height: ', median_male, ' cm')
 paste0('Median Female Player Height: ', median_female, ' cm')
 ```
@@ -64,6 +66,7 @@ We can clearly see that the average male player is taller than the average femal
 Let's create a Q-Q plot for the males and females to confirm our hypothesis that the heights of each gender are normally distributed. 
 
 ```{r height_normality}
+# plot qq-plot 
 all_players %>%
   filter(release_year == 2022) %>%
   ggplot(aes(color = gender)) + 
@@ -87,7 +90,6 @@ all_players %>%
     legend.position = 'none', 
     strip.text = element_text(size = 15, face = 'bold')
   )
-
 ```
 
 We can see that both the female and male players' heights are approximately normally distributed. The sample heights align very well with the theoretical heights based on a normal distribution. We can not do a Shapiro-Wilk test in this case since we have far more than 5,000 samples, but we can clearly see the approximate normal distribution from the Q-Q plot. This is not surprising, as we know that heights for the general population are normally distributed. 
@@ -97,9 +99,11 @@ We can see that both the female and male players' heights are approximately norm
 Let's get to the more interesting part of the analysis. We will visualize the median heights of both female and male players per position to see if there are some positions for which height is more of an asset than for others. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the heigh caluclation for multiple positions. 
 
 ```{r height_heatmap}
+# get a separate row for each position that a player plays 
 all_players_adjusted = all_players %>%
   separate_rows(player_positions)
 
+# get the median heights per position for males and females
 median_heights = all_players_adjusted %>%
   filter(release_year == 2022) %>%
   group_by(gender, player_positions) %>%
@@ -107,13 +111,16 @@ median_heights = all_players_adjusted %>%
     med_height = median(height_cm)
   )
 
+# get the order of positions by height 
 order_vect = median_heights %>%
   filter(gender == 'M') %>%
   arrange(med_height)
 order_vect = order_vect$player_positions
 
+# relevel the factor in the correct order 
 median_heights$player_positions = fct_relevel(median_heights$player_positions, order_vect)
 
+# plot a Cleveland Dot Plot 
 median_heights %>%
   ggplot(aes(x = med_height, y = player_positions, color = gender)) + 
   geom_point(size = 3) + 
@@ -150,6 +157,7 @@ For both the males and the females, the tallest player on the pitch tends to be 
 Now, let's take a look at the distribution of player heights per position. With the Cleveland Dot Plot we can see the median player height, but using a Ridgeline plot will also us to identify the modality of heights for each position. 
 
 ```{r ridges_plot}
+# plot a ridgeline plot 
 all_players_adjusted %>%
   ggplot(aes(x = height_cm, y = fct_reorder(player_positions, height_cm, median), fill = gender)) + 
   geom_density_ridges2(size = 1, alpha = 0.7, scale = 1.2) + 
