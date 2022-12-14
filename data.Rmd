@@ -2,9 +2,29 @@
 
 ## Sources
 
-The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single data.frame.
+For this project, we will be using the following FIFA datasets: https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/
 
-```{r merging_female}
+Electronic Arts Website: https://www.ea.com/sports 
+
+Every year, Electronic Arts releases a new version of the FIFA video game (i.e. FIFA 21 for 2021, FIFA 22 for 2022, etc.). Every year, the attributes and statistics of current players are updated and reevaluated, which keeps the game current. The origin of the data that we are working with is the Electronic Arts company, which determines the ratings of the teams and players when they design the newest release of the game. We are collecting our data from a website called sports-statistics.com. The website is a collection of sports analysts which collect video game/sports data to post online so interested fans can analyze and extract insights from it. Specifically, our dataset was created by Thomas Nielson, a writer for the website. The author collected the data from a website called [sofifa.com](sofifa.com), which is a website that keeps track of all of the players attributes/statistics with every release of the FIFA video game. The data that we've collected is scraped directly off of this website with minimal preprocessing/cleaning. 
+
+We looked at other websites for collecting this type of data, such as [Data World](<https://data.world/datasets/fifa>) and [Kaggle](<https://www.kaggle.com/datasets/stefanoleone992/fifa-21-complete-player-dataset>), however, the dataset we found contains the most complete information regarding the attributes of every player (both male and female) since 2015. The other datasets we came across also had a lot of preprocessing/cleaning applied to them. 
+
+The sports-statistics website is reliable and accurate. We performed some background research on the author of the dataset, Thomas Nielson, and found that he has published many other sports datasets on the website. We were unable to find anything negative about the dataset, the website, or the creator. We were also pleasantly surpised to find a link with which we can directly contact Thomas Nielson if we have any troubles with the dataset or find any errors. 
+
+We will now provide a brief overview of the dataset we collected. 
+
+The dataset that we are going to use is actually a collection of datasets. We have identified datasets documenting important player statistics from the FIFA video games for both male and female players in the game. Each of the datasets we collected corresponds to a single release of the FIFA video game (i.e. a particular year). We have 8 datasets for the males, ranging from 2015 through 2022. For the females, we have 7 datasets that correspond to the years 2016 through 2022 (female players were added to the game in 2016). Fortunately, each of the datasets contains the same number and type of features/variables. 
+
+Within the datasets, each row correponds to an individual player. Each dataset contains over 100 features, such as: name, position, foot preference, height, weight, wage, value, overall rating, attribute ratings (i.e. attacking, defending, speed, dribbling, goalkeeping, etc.), nationality, etc. These are the attributes that are coded into the video game, which gives the players their unique abilities within the game. Each of the attribute ratings has a max of 99 and a minimum of 1 (although no player has any attribute that is that low). Importantly, each of the players has a link to the [website](https://sofifa.com/players) where these attributes were collected from, which enhances our confidence in the data. 
+
+Many of the variables within the dataset are numeric variables. For example, like mentioned before, all of the ratings are a discrete value from 1 to 99. Some of the other columns, such as the name columns and nationality columns, are categorical variables in the form of text. After concatenating all of the datasets for each of the years and for female and male players, we have 144,323 records in the dataset. 
+
+## Cleaning/Transformation
+
+In terms of cleaning and transformation, we need to first combine all of the individual datasets into one master dataset. Since all of the datasets have the same number and types of columns, we simply are using "rbind" to combine the datasets. We are combining all of the individual years of data we have, along with the male and female versions. In order to be able to differentiate between the datasets later, we add a column for the gender of the player and the year of the release. 
+
+```{r merging_female, echo = TRUE}
 fem_16 = read.csv('data/female_players_16.csv')
 fem_16$release_year = '2016'
 
@@ -30,7 +50,7 @@ female_players = rbind(fem_16, fem_17, fem_18, fem_19, fem_20, fem_21, fem_22)
 ```
 
 
-```{r merging_male}
+```{r merging_male, echo = TRUE}
 male_15 = read.csv('data/players_15.csv')
 male_15$release_year = '2015'
 
@@ -59,7 +79,7 @@ male_players = rbind(male_15, male_16, male_17, male_18, male_19, male_20, male_
 
 ```
 
-```{r merging both}
+```{r merging both, echo = TRUE}
 female_players$gender = 'F'
 male_players$gender = 'M'
 
@@ -68,11 +88,9 @@ all_players = rbind(female_players, male_players)
 head(all_players)
 ```
 
-## Cleaning (from ls to gk, turn into numeric)
+Some of the variables within the dataset are encoded in a way that is not conducive to our analysis. For example, since some of the players see fluctuations in their attribute ratings during the lifespan of the game, some of the ratings are encoded in a form such as: "55+3". Thus, we must take only the first two numbers from the rating and turn it into a numeric rating, rather than a string/character rating. This occurs only in the columns that provide a rating for specific attributes of the players. 
 
-Some quantitative features are encoded under the form '55+3' for instance. We should therefore treat these values by keeping only the 2 first characters and turning them into integers.
-
-```{r cleaning}
+```{r cleaning, echo = TRUE}
 defaultW <- getOption("warn")
 options(warn = -1)
 
@@ -99,6 +117,8 @@ for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lc
 
 
 ```
+
+Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use "select" to grab the ones that are necessary for our later analyses. 
 
 ## Missing value analysis
 
@@ -163,7 +183,20 @@ melted_missing_vals %>%
 
 We see that we have a lot of missing values for **nation_jersey_number**, **nation_team_id**, and **goalkeeping_speed**. We discussed these missing values above. We also have some missing values for other attributes such as **defending**, **dribbling**, **pace**, etc. This is because some players are not given certain ratings, usually because they do not do those things (i.e. goalkeeping). Some of these values might also be missing because they were not attributes in the earlier years of the game. Either way, we will pay close attention to these missing values if we are going to be using these variables for our analysis. 
 
-We wanted to try and use the **missing_values** function from the **redav** package, but there are far too many columns in our dataset for the plots to be meaningful or look clean. Thus, we will stick with this simple analysis for now and pay close attention to the missing values. 
+Let's see if there are any missing patterns in the data. We will remove columns that are missing less than 20% of their values (since it is impossible to see what is going on with so many variables). 
+
+```{r missing_patterns, fig.width = 5}
+library(redav)
+
+keep = names(missing_vals[missing_vals > 0.2])
+
+all_players_filtered = all_players %>%
+  select(all_of(keep))
+
+redav::plot_missing(all_players_filtered)
+```
+
+There aren't many patterns that emerge when looking at the missing values within our dataset. However, we can see that the most common pattern of missing values is missing the **nation_team_id**, **nation_jersey_number**, and **goalkeeping_speed** attributes. It makes sense that if a player does not play for the national team, then they will be missing the **nation_team_id** and the **nation_jersey_number** columns (which is also pattern 4). Most of the players in our dataset will be missing any of the attributes that are associated with being a goalkeeper, since a majority of the players are not goalkeepers and their attributes are very specific to them. We also see that we have very few complete rows within the dataset, again because almost every player has some attribute that is not assigned to them since they do not play the position or require that attribute. All in all, there are no striking patterns that emerge from the data regarding the missing values. Since the data contains a number of features that are URL's, team/nation ids, etc., we expect there to be a large number of missing values. This is no issue, however, for our analysis because we will only be using what is required for each of our plots. We have also decided not to completely remove any column, as there is no need. We will simply be selecting the columns we want to use during our analysis of the dataset. If we were instead training a machine learning model, we obviously would have to remove the columns that would disrupt our analysis. Our goal of this section was to concatenate the datasets and preprocess the attribute ratings so that they are in a form that we can use.  
 
 
 
