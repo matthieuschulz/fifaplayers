@@ -2,7 +2,7 @@
 
 ## Sources
 
-The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single dataframe.
+The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single data.frame.
 
 ```{r merging_female}
 fem_16 = read.csv('data/female_players_16.csv')
@@ -101,4 +101,69 @@ for (col in c("ls","st","rs","lw","lf","cf","rf","rw","lam","cam","ram","lm","lc
 ```
 
 ## Missing value analysis
+
+Let's start by checking how many missing values are in each column. 
+
+```{r count_missing}
+colSums(is.na(all_players)) %>%
+  sort(decreasing = TRUE)
+```
+
+We see that we have a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis. 
+
+We can't visualize these missing values with a heatmap because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead. 
+
+```{r missing_val_hm}
+library(forcats)
+
+# get number of rows in the dataset 
+nr = nrow(all_players)
+
+# get percentage of missing values 
+missing_vals = colSums(is.na(all_players)) %>%
+  sort(decreasing = TRUE)
+missing_vals = missing_vals / nr
+
+# remove columns that have no missing values 
+missing_vals = missing_vals[missing_vals > 0]
+
+# melt the data
+melted_missing_vals = reshape2::melt(missing_vals) %>%
+  mutate(
+    variable = rownames(.), 
+    .before = 1
+  )
+rownames(melted_missing_vals) = NULL
+
+# plot 
+melted_missing_vals %>%
+  ggplot(aes(x = fct_reorder(variable, -value), y = value)) + 
+  geom_bar(stat = 'identity', fill = 'black') + 
+  scale_y_continuous(
+    limits = c(0, 1), 
+    breaks = c(0, 0.25, 0.5, 0.75, 1), 
+    labels = scales::percent
+  ) +
+  labs(
+    x = 'Variable', 
+    y = 'Percent Missing', 
+    title = 'Percent of Missing Values'
+  ) + 
+  theme_classic() + 
+  theme(
+    axis.title.x = element_text(face = 'bold', size = 15, vjust = -0.5), 
+    axis.title.y = element_text(face = 'bold', size = 15, vjust = 2),
+    axis.text.x = element_text(size = 12, angle = 90, hjust = 1, vjust = 0.5), 
+    axis.text.y = element_text(size = 12), 
+    plot.title = element_text(face = 'bold', size = 20)
+  )
+```
+
+We see that we have a lot of missing values for **nation_jersey_number**, **nation_team_id**, and **goalkeeping_speed**. We discussed these missing values above. We also have some missing values for other attributes such as **defending**, **dribbling**, **pace**, etc. This is because some players are not given certain ratings, usually because they do not do those things (i.e. goalkeeping). Some of these values might also be missing because they were not attributes in the earlier years of the game. Either way, we will pay close attention to these missing values if we are going to be using these variables for our analysis. 
+
+We wanted to try and use the **missing_values** function from the **redav** package, but there are far too many columns in our dataset for the plots to be meaningful or look clean. Thus, we will stick with this simple analysis for now and pay close attention to the missing values. 
+
+
+
+
 
