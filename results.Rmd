@@ -589,7 +589,7 @@ all_players_new %>%
     y = 'Density', 
     fill = 'Gender', 
     title = 'Distribution of Player Annual Salaries'
-  ) + 
+  ) +
   theme_classic() + 
   theme(
     axis.title.x = element_text(face = 'bold', size = 12, vjust = -0.5), 
@@ -654,7 +654,7 @@ median_salaries = all_players_adjusted %>%
   filter(release_year == 2022) %>%
   group_by(gender, player_positions) %>%
   summarize(
-    med_salary = median(wage_eur, na.rm = TRUE)
+    med_salary = median(wage_eur*52, na.rm = TRUE)
   )
 
 order_vect = median_salaries %>%
@@ -677,6 +677,7 @@ median_salaries %>%
     color = 'Gender', 
     title = 'Median Salary per Player Position'
   ) + 
+  scale_x_continuous(limits = c(0, 500000)) +
   theme_classic() + 
   theme(
     panel.grid.major.y = element_line(color = 'lightgrey', linetype = 'dashed'), 
@@ -691,19 +692,4 @@ median_salaries %>%
     legend.title = element_text(face = 'bold', size = 15)
   )
 ```
-
-The Cleveland Dot Plot above provides many interesting insights.XXX
-
-
-### Ranking of wages depending on the country where the player is located in
-
-```{r}
- ggplot(all_players, aes(x = fct_relevel(performance_rating, "High", after = 2), y = percen
-  geom_boxplot(color = "black", fill = "lightBlue") +
-  ggtitle("Boxplots of % increases according to performance ratings and missing values") +
-4
-t_incr)) +
- xlab("Performance Rating") +
-ylab("Percetange Increase (%)") +
-coord_flip()
-```
+The Cleveland Dot Plot above provides many interesting insights. To begin with, all median salaries of men are higher than those of women. For men, it looks like the higher one plays on the pitch, the more one gets paid. This is not the case for women where most positions seem to have the same median salary and CAM (midfielder) is the position that is paid the most (same as the worst paid position for men, goalkeeper).
