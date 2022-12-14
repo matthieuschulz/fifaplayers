@@ -23,7 +23,7 @@
 <meta name="author" content="Matthieu Schulz, Hugo Ginoux, Ryan McNamara" />
 
 
-<meta name="date" content="2022-12-13" />
+<meta name="date" content="2022-12-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,54 +52,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
-<script src="libs/proj4js-2.3.15/proj4.js"></script>
-<link href="libs/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
-<script src="libs/highcharts-9.3.1/highcharts.js"></script>
-<script src="libs/highcharts-9.3.1/highcharts-3d.js"></script>
-<script src="libs/highcharts-9.3.1/highcharts-more.js"></script>
-<script src="libs/highcharts-9.3.1/modules/stock.js"></script>
-<script src="libs/highcharts-9.3.1/modules/map.js"></script>
-<script src="libs/highcharts-9.3.1/modules/data.js"></script>
-<script src="libs/highcharts-9.3.1/modules/exporting.js"></script>
-<script src="libs/highcharts-9.3.1/modules/offline-exporting.js"></script>
-<script src="libs/highcharts-9.3.1/modules/drilldown.js"></script>
-<script src="libs/highcharts-9.3.1/modules/item-series.js"></script>
-<script src="libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
-<script src="libs/highcharts-9.3.1/modules/annotations.js"></script>
-<script src="libs/highcharts-9.3.1/modules/export-data.js"></script>
-<script src="libs/highcharts-9.3.1/modules/funnel.js"></script>
-<script src="libs/highcharts-9.3.1/modules/heatmap.js"></script>
-<script src="libs/highcharts-9.3.1/modules/treemap.js"></script>
-<script src="libs/highcharts-9.3.1/modules/sankey.js"></script>
-<script src="libs/highcharts-9.3.1/modules/dependency-wheel.js"></script>
-<script src="libs/highcharts-9.3.1/modules/organization.js"></script>
-<script src="libs/highcharts-9.3.1/modules/solid-gauge.js"></script>
-<script src="libs/highcharts-9.3.1/modules/streamgraph.js"></script>
-<script src="libs/highcharts-9.3.1/modules/sunburst.js"></script>
-<script src="libs/highcharts-9.3.1/modules/vector.js"></script>
-<script src="libs/highcharts-9.3.1/modules/wordcloud.js"></script>
-<script src="libs/highcharts-9.3.1/modules/xrange.js"></script>
-<script src="libs/highcharts-9.3.1/modules/tilemap.js"></script>
-<script src="libs/highcharts-9.3.1/modules/venn.js"></script>
-<script src="libs/highcharts-9.3.1/modules/gantt.js"></script>
-<script src="libs/highcharts-9.3.1/modules/timeline.js"></script>
-<script src="libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
-<script src="libs/highcharts-9.3.1/modules/bullet.js"></script>
-<script src="libs/highcharts-9.3.1/modules/coloraxis.js"></script>
-<script src="libs/highcharts-9.3.1/modules/dumbbell.js"></script>
-<script src="libs/highcharts-9.3.1/modules/lollipop.js"></script>
-<script src="libs/highcharts-9.3.1/modules/series-label.js"></script>
-<script src="libs/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="libs/highcharts-9.3.1/custom/reset.js"></script>
-<script src="libs/highcharts-9.3.1/modules/boost.js"></script>
-<script src="libs/highchart-binding-0.9.4/highchart.js"></script>
 
 
 
@@ -205,64 +157,88 @@ Select a year
 <label for="21">2021</label><br>
 <input type="radio" id="22" name="year" value="22" checked>
 <label for="22">2022</label><br></p>
-<svg>
+<h3 id="graph_title">
+Distribution of the ages of the players
+</h3>
+<svg id="my_dataviz">
 </svg>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
 
-const gender = d3.select('input[name="gender"]:checked').property("value");
-const year = d3.select('input[name="year"]:checked').property("value");
+const height = 500;
+const width = 800;
 
-const data = [0.2, 0.4, 0.5, 0.1]
-const w = 800
-const h = 500
-const hp = 400
-const m = 50
+const svg = d3.select("#my_dataviz")
+  .attr("width", width)
+  .attr("height", height);
 
-const svg = d3.select("svg")
-  .attr("width", w)
-  .attr("height", h);
+// dataset
 
-svg.append("rect")
-    .attr("x", m)
-    .attr("y", (1-data[0])*hp)
-    .attr("width", m)
-    .attr("height", (1-data[0])*hp)
-    .attr("fill", "blue");
-    
-svg.append("text")
-    .attr("x", m)
-    .attr("y", h)
-    .attr("text-anchor", "start")
-    .text("<25")
-    
-svg.append("rect")
-    .attr("x", 3*m)
-    .attr("y", (1-data[1])*hp)
-    .attr("width", m)
-    .attr("height", (1-data[1])*hp)
-    .attr("fill", "purple");
-    
-svg.append("text")
-    .attr("x", 3*m)
-    .attr("y", h)
-    .attr("text-anchor", "start")
-    .text("between 25 and 30")
-    
-svg.append("rect")
-    .attr("x", 5*m)
-    .attr("y", (1-data[2])*hp)
-    .attr("width", m)
-    .attr("height", (1-data[2])*hp)
-    .attr("fill", "red");
-    
-svg.append("text")
-    .attr("x", 5*m)
-    .attr("y", h)
-    .attr("text-anchor", "start")
-    .text("between 30 and 35")
-    
+const dataset = {
+  "male": {
+    16: [0.574, 0.294, 0.119, 0.013],
+    17: [0.567, 0.295, 0.122, 0.015],
+    18: [0.561, 0.297, 0.127, 0.015],
+    19: [0.547, 0.308, 0.128, 0.017],
+    20: [0.543, 0.304, 0.136, 0.016],
+    21: [0.549, 0.303, 0.129, 0.019],
+    22: [0.557, 0.291, 0.132, 0.020],
+  },
+  "female": {
+    16: [0.472, 0.391, 0.109, 0.028],
+    17: [0.485, 0.378, 0.124, 0.013],
+    18: [0.517, 0.363, 0.110, 0.009],
+    19: [0.488, 0.395, 0.114, 0.003],
+    20: [0.397, 0.429, 0.159, 0.014],
+    21: [0.365, 0.461, 0.145, 0.029],
+    22: [0.358, 0.442, 0.171, 0.028],
+  }
+};
 
+
+d3.selectAll("input")
+    .on("change", function () {update()});
+
+function update() {
+  const gender = d3.select('input[name="gender"]:checked').property("value");
+  const year = +d3.select('input[name="year"]:checked').property("value");
+  const true_year = 2000 + year;
+  
+  const txt = "Distribution of the ages of the " + gender + " players" + " in " + true_year.toString();
+  d3.select("#graph_title").text(txt);
+  
+  const data = {age:["<25", "25 to 30", "30 to 35", ">35"], value: dataset[gender][year]};
+
+  // add the rectangles
+  const rects = svg
+    .selectAll("rect")
+    .data(data.value);
+
+  rects.enter()
+    .append("rect")
+    .merge(rects)
+      .attr("x", (d,i) => 100*(i+1))
+      .attr("y", 60)
+      .attr("width", 50)
+      .attr("height", (d,i) => height*d)
+      .attr("fill", "#69b3a2");
+      
+  // add the labels
+  const labels = svg
+    .selectAll("text")
+    .data(data.age);
+
+  labels.enter()
+    .append("g")
+      .append("text")
+      .merge(labels)
+        .attr("x", (d,i) => 100*(i+1))
+        .attr("y", 30)
+        .text(d => d)
+        .attr("fill", "black")
+        .attr("text-anchor", "start");
+        
+}
 
 
 </script>
