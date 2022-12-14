@@ -585,10 +585,10 @@ all_players_new %>%
     values = c('F' = 'pink2', 'M' = 'blue')
   ) + 
   labs(
-    x = 'Annual Wages', 
+    x = 'Annual Wages (log scale)', 
     y = 'Density', 
     fill = 'Gender', 
-    title = 'Distribution of Player Salaries'
+    title = 'Distribution of Player Annual Salaries'
   ) + 
   theme_classic() + 
   theme(
@@ -601,7 +601,8 @@ all_players_new %>%
     legend.title = element_text(face = 'bold', size = 15)
   )
 ```
-We can clearly see that the average male player is taller than the average female player. We can also see that the heights of both the male and female players are approximately normally distributed. The median male player height is 181 cm, while the median female player height is 170 cm. 
+We can clearly see that the average male player is makes more than the average female player. The distribution of female annual salaries is heavily skewed to the right whereas much less for men. The distribution also shows that some men tend to make extremely high amounts of money (although this is only restrained to the best players) whereas not all at all for women.
+
 
 ### Key Statistics Comparison of Annual Wage for Male and Female Players
 ```{r}
@@ -639,11 +640,11 @@ paste0('Min Male Player Salary: ', min_male, ' €')
 paste0('Min Female Player Salary: ', min_female, ' €')
 
 ```
-
+From the key statistics above, we can see how significant the differences are between women and men in terms of salaries... Although the minimum annual wages are the same for both men and women, the maximum women player annual salary is half the amount of the median of male annual salaries. Lastly, the highest paid male in the game is paid close to 30M€ annually, more than 300 times what the highest paid female receives (104k€). This difference clearly needs to be reduced...
 
 ### Median Player Salaries per Position  
 
-We will now compare the median salaries of both female and male players per position to see if there are some positions with an advantage in terms of salary. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the salary calculations for multiple positions. 
+We will now compare the median salaries of both female and male players per position to see if there are some positions with an advantage in terms of salary in comparison to others. We will again be using the data from 2022 only. Since most players play more than one position, we will include a row in our data for each position that the player plays. Thus, some (if not most) players will be included in the salary calculations for multiple positions. 
 
 ```{r}
 all_players_adjusted = all_players %>%
@@ -664,14 +665,14 @@ order_vect = order_vect$player_positions
 median_salaries$player_positions = fct_relevel(median_salaries$player_positions, order_vect)
 
 median_salaries %>%
-  ggplot(aes(x = med_height, y = player_positions, color = gender)) + 
+  ggplot(aes(x = med_salary, y = player_positions, color = gender)) + 
   geom_point(size = 3) + 
   scale_color_manual(
     labels = c('F' = 'Female', 'M' = 'Male'), 
     values = c('F' = 'pink2', 'M' = 'blue')
   ) + 
   labs(
-    x = 'Height (cm)', 
+    x = 'Wages (€)', 
     y = 'Position', 
     color = 'Gender', 
     title = 'Median Salary per Player Position'
@@ -690,4 +691,19 @@ median_salaries %>%
     legend.title = element_text(face = 'bold', size = 15)
   )
 ```
+
 The Cleveland Dot Plot above provides many interesting insights.XXX
+
+
+### Ranking of wages depending on the country where the player is located in
+
+```{r}
+ ggplot(all_players, aes(x = fct_relevel(performance_rating, "High", after = 2), y = percen
+  geom_boxplot(color = "black", fill = "lightBlue") +
+  ggtitle("Boxplots of % increases according to performance ratings and missing values") +
+4
+t_incr)) +
+ xlab("Performance Rating") +
+ylab("Percetange Increase (%)") +
+coord_flip()
+```
