@@ -654,7 +654,7 @@ median_salaries = all_players_adjusted %>%
   filter(release_year == 2022) %>%
   group_by(gender, player_positions) %>%
   summarize(
-    med_salary = median(wage_eur)
+    med_salary = median(wage_eur, na.rm = TRUE)
   )
 
 order_vect = median_salaries %>%
