@@ -29,6 +29,8 @@ where-are-the-best-players-from
 all-the-players
 top-1000-players
 analysis-of-male-vs-female-salaries
-comparison-by-country
+overall-distribution-of-male-and-female-salaries
+key-statistics-comparison-of-annual-wage-for-male-and-female-players
+median-player-salaries-per-position
 interactive-component
 conclusion
