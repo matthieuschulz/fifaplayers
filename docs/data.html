@@ -102,6 +102,70 @@
 <script src="libs/highchart-binding-0.9.4/highchart.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -129,7 +193,7 @@
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#sources"><i class="fa fa-check"></i><b>3.1</b> Sources</a></li>
-<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-from-ls-to-gk-turn-into-numeric"><i class="fa fa-check"></i><b>3.2</b> Cleaning (from ls to gk, turn into numeric)</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaningtransformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning/Transformation</a></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
@@ -184,10 +248,79 @@
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single dataframe.</p>
 =======
 <p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single data.frame.</p>
 >>>>>>> b0272877face21c11ce5805705be4bacf51de0a6
+=======
+<p>For this project, we will be using the following FIFA datasets: <a href="https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/" class="uri">https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/</a></p>
+<p>Electronic Arts Website: <a href="https://www.ea.com/sports" class="uri">https://www.ea.com/sports</a></p>
+<p>Every year, Electronic Arts releases a new version of the FIFA video game (i.e. FIFA 21 for 2021, FIFA 22 for 2022, etc.). Every year, the attributes and statistics of current players are updated and reevaluated, which keeps the game current. The origin of the data that we are working with is the Electronic Arts company, which determines the ratings of the teams and players when they design the newest release of the game. We are collecting our data from a website called sports-statistics.com. The website is a collection of sports analysts which collect video game/sports data to post online so interested fans can analyze and extract insights from it. Specifically, our dataset was created by Thomas Nielson, a writer for the website. The author collected the data from a website called <a href="sofifa.com">sofifa.com</a>, which is a website that keeps track of all of the players attributes/statistics with every release of the FIFA video game. The data that we’ve collected is scraped directly off of this website with minimal preprocessing/cleaning.</p>
+<p>We looked at other websites for collecting this type of data, such as <a href="https://data.world/datasets/fifa">Data World</a> and <a href="https://www.kaggle.com/datasets/stefanoleone992/fifa-21-complete-player-dataset">Kaggle</a>, however, the dataset we found contains the most complete information regarding the attributes of every player (both male and female) since 2015. The other datasets we came across also had a lot of preprocessing/cleaning applied to them.</p>
+<p>The sports-statistics website is reliable and accurate. We performed some background research on the author of the dataset, Thomas Nielson, and found that he has published many other sports datasets on the website. We were unable to find anything negative about the dataset, the website, or the creator. We were also pleasantly surpised to find a link with which we can directly contact Thomas Nielson if we have any troubles with the dataset or find any errors.</p>
+<p>We will now provide a brief overview of the dataset we collected.</p>
+<p>The dataset that we are going to use is actually a collection of datasets. We have identified datasets documenting important player statistics from the FIFA video games for both male and female players in the game. Each of the datasets we collected corresponds to a single release of the FIFA video game (i.e. a particular year). We have 8 datasets for the males, ranging from 2015 through 2022. For the females, we have 7 datasets that correspond to the years 2016 through 2022 (female players were added to the game in 2016). Fortunately, each of the datasets contains the same number and type of features/variables.</p>
+<p>Within the datasets, each row correponds to an individual player. Each dataset contains over 100 features, such as: name, position, foot preference, height, weight, wage, value, overall rating, attribute ratings (i.e. attacking, defending, speed, dribbling, goalkeeping, etc.), nationality, etc. These are the attributes that are coded into the video game, which gives the players their unique abilities within the game. Each of the attribute ratings has a max of 99 and a minimum of 1 (although no player has any attribute that is that low). Importantly, each of the players has a link to the <a href="https://sofifa.com/players">website</a> where these attributes were collected from, which enhances our confidence in the data.</p>
+<p>Many of the variables within the dataset are numeric variables. For example, like mentioned before, all of the ratings are a discrete value from 1 to 99. Some of the other columns, such as the name columns and nationality columns, are categorical variables in the form of text. After concatenating all of the datasets for each of the years and for female and male players, we have 144,323 records in the dataset.</p>
+</div>
+<div id="cleaningtransformation" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Cleaning/Transformation<a href="data.html#cleaningtransformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In terms of cleaning and transformation, we need to first combine all of the individual datasets into one master dataset. Since all of the datasets have the same number and types of columns, we simply are using “rbind” to combine the datasets. We are combining all of the individual years of data we have, along with the male and female versions. In order to be able to differentiate between the datasets later, we add a column for the gender of the player and the year of the release.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>fem_16 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_16.csv&#39;</span>)</span>
+<span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>fem_16<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2016&#39;</span></span>
+<span id="cb1-3"><a href="data.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="data.html#cb1-4" aria-hidden="true" tabindex="-1"></a>fem_17 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_17.csv&#39;</span>)</span>
+<span id="cb1-5"><a href="data.html#cb1-5" aria-hidden="true" tabindex="-1"></a>fem_17<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2017&#39;</span></span>
+<span id="cb1-6"><a href="data.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="data.html#cb1-7" aria-hidden="true" tabindex="-1"></a>fem_18 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_18.csv&#39;</span>)</span>
+<span id="cb1-8"><a href="data.html#cb1-8" aria-hidden="true" tabindex="-1"></a>fem_18<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2018&#39;</span></span>
+<span id="cb1-9"><a href="data.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="data.html#cb1-10" aria-hidden="true" tabindex="-1"></a>fem_19 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_19.csv&#39;</span>)</span>
+<span id="cb1-11"><a href="data.html#cb1-11" aria-hidden="true" tabindex="-1"></a>fem_19<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2019&#39;</span></span>
+<span id="cb1-12"><a href="data.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="data.html#cb1-13" aria-hidden="true" tabindex="-1"></a>fem_20 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_20.csv&#39;</span>)</span>
+<span id="cb1-14"><a href="data.html#cb1-14" aria-hidden="true" tabindex="-1"></a>fem_20<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2020&#39;</span></span>
+<span id="cb1-15"><a href="data.html#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="data.html#cb1-16" aria-hidden="true" tabindex="-1"></a>fem_21 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_21.csv&#39;</span>)</span>
+<span id="cb1-17"><a href="data.html#cb1-17" aria-hidden="true" tabindex="-1"></a>fem_21<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2021&#39;</span></span>
+<span id="cb1-18"><a href="data.html#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="data.html#cb1-19" aria-hidden="true" tabindex="-1"></a>fem_22 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/female_players_22.csv&#39;</span>)</span>
+<span id="cb1-20"><a href="data.html#cb1-20" aria-hidden="true" tabindex="-1"></a>fem_22<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2022&#39;</span></span>
+<span id="cb1-21"><a href="data.html#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="data.html#cb1-22" aria-hidden="true" tabindex="-1"></a>female_players <span class="ot">=</span> <span class="fu">rbind</span>(fem_16, fem_17, fem_18, fem_19, fem_20, fem_21, fem_22)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data.html#cb2-1" aria-hidden="true" tabindex="-1"></a>male_15 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_15.csv&#39;</span>)</span>
+<span id="cb2-2"><a href="data.html#cb2-2" aria-hidden="true" tabindex="-1"></a>male_15<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2015&#39;</span></span>
+<span id="cb2-3"><a href="data.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="data.html#cb2-4" aria-hidden="true" tabindex="-1"></a>male_16 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_16.csv&#39;</span>)</span>
+<span id="cb2-5"><a href="data.html#cb2-5" aria-hidden="true" tabindex="-1"></a>male_16<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2016&#39;</span></span>
+<span id="cb2-6"><a href="data.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="data.html#cb2-7" aria-hidden="true" tabindex="-1"></a>male_17 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_17.csv&#39;</span>)</span>
+<span id="cb2-8"><a href="data.html#cb2-8" aria-hidden="true" tabindex="-1"></a>male_17<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2017&#39;</span></span>
+<span id="cb2-9"><a href="data.html#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="data.html#cb2-10" aria-hidden="true" tabindex="-1"></a>male_18 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_18.csv&#39;</span>)</span>
+<span id="cb2-11"><a href="data.html#cb2-11" aria-hidden="true" tabindex="-1"></a>male_18<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2018&#39;</span></span>
+<span id="cb2-12"><a href="data.html#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="data.html#cb2-13" aria-hidden="true" tabindex="-1"></a>male_19 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_19.csv&#39;</span>)</span>
+<span id="cb2-14"><a href="data.html#cb2-14" aria-hidden="true" tabindex="-1"></a>male_19<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2019&#39;</span></span>
+<span id="cb2-15"><a href="data.html#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="data.html#cb2-16" aria-hidden="true" tabindex="-1"></a>male_20 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_20.csv&#39;</span>)</span>
+<span id="cb2-17"><a href="data.html#cb2-17" aria-hidden="true" tabindex="-1"></a>male_20<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2020&#39;</span></span>
+<span id="cb2-18"><a href="data.html#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="data.html#cb2-19" aria-hidden="true" tabindex="-1"></a>male_21 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_21.csv&#39;</span>)</span>
+<span id="cb2-20"><a href="data.html#cb2-20" aria-hidden="true" tabindex="-1"></a>male_21<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2021&#39;</span></span>
+<span id="cb2-21"><a href="data.html#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="data.html#cb2-22" aria-hidden="true" tabindex="-1"></a>male_22 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/players_22.csv&#39;</span>)</span>
+<span id="cb2-23"><a href="data.html#cb2-23" aria-hidden="true" tabindex="-1"></a>male_22<span class="sc">$</span>release_year <span class="ot">=</span> <span class="st">&#39;2022&#39;</span></span>
+<span id="cb2-24"><a href="data.html#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="data.html#cb2-25" aria-hidden="true" tabindex="-1"></a>male_players <span class="ot">=</span> <span class="fu">rbind</span>(male_15, male_16, male_17, male_18, male_19, male_20, male_21, male_22)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>female_players<span class="sc">$</span>gender <span class="ot">=</span> <span class="st">&#39;F&#39;</span></span>
+<span id="cb3-2"><a href="data.html#cb3-2" aria-hidden="true" tabindex="-1"></a>male_players<span class="sc">$</span>gender <span class="ot">=</span> <span class="st">&#39;M&#39;</span></span>
+<span id="cb3-3"><a href="data.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="data.html#cb3-4" aria-hidden="true" tabindex="-1"></a>all_players <span class="ot">=</span> <span class="fu">rbind</span>(female_players, male_players)</span>
+<span id="cb3-5"><a href="data.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="data.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(all_players)</span></code></pre></div>
+>>>>>>> 0f265df42bb64aec16b81d62c900991b7b56be6a
 <pre><code>##   sofifa_id                                                 player_url
 ## 1    226324        https://sofifa.com/player/226324/carli-lloyd/160002
 ## 2    226328      https://sofifa.com/player/226328/megan-rapinoe/160002
@@ -370,10 +503,31 @@
 ## 4 https://cdn.sofifa.com/flags/fr.png         2016      F
 ## 5 https://cdn.sofifa.com/flags/de.png         2016      F
 ## 6 https://cdn.sofifa.com/flags/ca.png         2016      F</code></pre>
-</div>
-<div id="cleaning-from-ls-to-gk-turn-into-numeric" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Cleaning (from ls to gk, turn into numeric)<a href="data.html#cleaning-from-ls-to-gk-turn-into-numeric" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Some quantitative features are encoded under the form ‘55+3’ for instance. We should therefore treat these values by keeping only the 2 first characters and turning them into integers.</p>
+<p>Some of the variables within the dataset are encoded in a way that is not conducive to our analysis. For example, since some of the players see fluctuations in their attribute ratings during the lifespan of the game, some of the ratings are encoded in a form such as: “55+3”. Thus, we must take only the first two numbers from the rating and turn it into a numeric rating, rather than a string/character rating. This occurs only in the columns that provide a rating for specific attributes of the players.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a>defaultW <span class="ot">&lt;-</span> <span class="fu">getOption</span>(<span class="st">&quot;warn&quot;</span>)</span>
+<span id="cb5-2"><a href="data.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">warn =</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="data.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="data.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>clean_col<span class="ot">=</span><span class="cf">function</span>(dataset, col){</span>
+<span id="cb5-6"><a href="data.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  column <span class="ot">=</span> dataset[, col]</span>
+<span id="cb5-7"><a href="data.html#cb5-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-8"><a href="data.html#cb5-8" aria-hidden="true" tabindex="-1"></a>  str_to_num <span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb5-9"><a href="data.html#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, <span class="dv">1</span>, <span class="dv">2</span>)))</span>
+<span id="cb5-10"><a href="data.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-11"><a href="data.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="data.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sapply</span>(column, <span class="at">FUN =</span> str_to_num))</span>
+<span id="cb5-13"><a href="data.html#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-14"><a href="data.html#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="data.html#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="data.html#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>,<span class="st">&quot;st&quot;</span>,<span class="st">&quot;rs&quot;</span>,<span class="st">&quot;lw&quot;</span>,<span class="st">&quot;lf&quot;</span>,<span class="st">&quot;cf&quot;</span>,<span class="st">&quot;rf&quot;</span>,<span class="st">&quot;rw&quot;</span>,<span class="st">&quot;lam&quot;</span>,<span class="st">&quot;cam&quot;</span>,<span class="st">&quot;ram&quot;</span>,<span class="st">&quot;lm&quot;</span>,<span class="st">&quot;lcm&quot;</span>,<span class="st">&quot;cm&quot;</span>,<span class="st">&quot;rcm&quot;</span>,<span class="st">&quot;rm&quot;</span>,<span class="st">&quot;lwb&quot;</span>,<span class="st">&quot;ldm&quot;</span>,<span class="st">&quot;cdm&quot;</span>,<span class="st">&quot;rdm&quot;</span>,<span class="st">&quot;rwb&quot;</span>,<span class="st">&quot;lb&quot;</span>,<span class="st">&quot;lcb&quot;</span>,<span class="st">&quot;cb&quot;</span>,<span class="st">&quot;rcb&quot;</span>,<span class="st">&quot;rb&quot;</span>,<span class="st">&quot;gk&quot;</span>)){</span>
+<span id="cb5-17"><a href="data.html#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(col)</span></span>
+<span id="cb5-18"><a href="data.html#cb5-18" aria-hidden="true" tabindex="-1"></a>    all_players[,col]<span class="ot">=</span><span class="fu">clean_col</span>(all_players, col)</span>
+<span id="cb5-19"><a href="data.html#cb5-19" aria-hidden="true" tabindex="-1"></a>    male_players[,col]<span class="ot">=</span><span class="fu">clean_col</span>(male_players, col)</span>
+<span id="cb5-20"><a href="data.html#cb5-20" aria-hidden="true" tabindex="-1"></a>    female_players[,col]<span class="ot">=</span><span class="fu">clean_col</span>(female_players, col)</span>
+<span id="cb5-21"><a href="data.html#cb5-21" aria-hidden="true" tabindex="-1"></a>    male_22[,col]<span class="ot">=</span><span class="fu">clean_col</span>(male_22, col)</span>
+<span id="cb5-22"><a href="data.html#cb5-22" aria-hidden="true" tabindex="-1"></a>    fem_22[,col]<span class="ot">=</span><span class="fu">clean_col</span>(fem_22, col)</span>
+<span id="cb5-23"><a href="data.html#cb5-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use “select” to grab the ones that are necessary for our later analyses.</p>
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -494,7 +648,9 @@
 <p>We can’t visualize these missing values with a heatmap because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead.</p>
 <p><img src="finalproj_files/figure-html/missing_val_hm-1.png" width="672" /></p>
 <p>We see that we have a lot of missing values for <strong>nation_jersey_number</strong>, <strong>nation_team_id</strong>, and <strong>goalkeeping_speed</strong>. We discussed these missing values above. We also have some missing values for other attributes such as <strong>defending</strong>, <strong>dribbling</strong>, <strong>pace</strong>, etc. This is because some players are not given certain ratings, usually because they do not do those things (i.e. goalkeeping). Some of these values might also be missing because they were not attributes in the earlier years of the game. Either way, we will pay close attention to these missing values if we are going to be using these variables for our analysis.</p>
-<p>We wanted to try and use the <strong>missing_values</strong> function from the <strong>redav</strong> package, but there are far too many columns in our dataset for the plots to be meaningful or look clean. Thus, we will stick with this simple analysis for now and pay close attention to the missing values.</p>
+<p>Let’s see if there are any missing patterns in the data. We will remove columns that are missing less than 20% of their values (since it is impossible to see what is going on with so many variables).</p>
+<p><img src="finalproj_files/figure-html/missing_patterns-1.png" width="480" /></p>
+<p>There aren’t many patterns that emerge when looking at the missing values within our dataset. However, we can see that the most common pattern of missing values is missing the <strong>nation_team_id</strong>, <strong>nation_jersey_number</strong>, and <strong>goalkeeping_speed</strong> attributes. It makes sense that if a player does not play for the national team, then they will be missing the <strong>nation_team_id</strong> and the <strong>nation_jersey_number</strong> columns (which is also pattern 4). Most of the players in our dataset will be missing any of the attributes that are associated with being a goalkeeper, since a majority of the players are not goalkeepers and their attributes are very specific to them. We also see that we have very few complete rows within the dataset, again because almost every player has some attribute that is not assigned to them since they do not play the position or require that attribute. All in all, there are no striking patterns that emerge from the data regarding the missing values. Since the data contains a number of features that are URL’s, team/nation ids, etc., we expect there to be a large number of missing values. This is no issue, however, for our analysis because we will only be using what is required for each of our plots. We have also decided not to completely remove any column, as there is no need. We will simply be selecting the columns we want to use during our analysis of the dataset. If we were instead training a machine learning model, we obviously would have to remove the columns that would disrupt our analysis. Our goal of this section was to concatenate the datasets and preprocess the attribute ratings so that they are in a form that we can use.</p>
 
 </div>
 </div>

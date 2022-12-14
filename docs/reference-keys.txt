@@ -4,7 +4,7 @@ research-topic
 data-availability
 data
 sources
-cleaning-from-ls-to-gk-turn-into-numeric
+cleaningtransformation
 missing-value-analysis
 results
 analysis-of-player-heights
