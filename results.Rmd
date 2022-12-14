@@ -148,6 +148,7 @@ median_heights %>%
     legend.title = element_text(face = 'bold', size = 15)
   )
 ```
+
 The Cleveland Dot Plot above provides many interesting insights. First, we can confirm the above conclusion that the male players are taller than the female players. Further, we can see that this is true for every single position. 
 
 For both the males and the females, the tallest player on the pitch tends to be the goalkeeper. The goalkeeper is in charge of protecting the net, thus, it makes sense for a goalkeeper to be tall in order to "cover" as much of the goal as possible. We also see that the 2nd, 3rd, and 4th tallest positions for the men are the center back (CB), striker (ST), and center defensive midfielder (CDM). These positions are also among the tallest for the women as well. The tallest players (besides the goalkeeper), tend to be the defensive players (center back (CB), center defensive midfielder (CDM), left back (LB), left wing back (LWB), etc.). This also is in agreement with what we know about football; the defensive players must be able to win headers to protect the goal, which height helps. Strikers are among the only offensive players to have large heights, for both the men and the women. Strikers tend to play in the box, meaning they must compete against the tall defensive players for headers. The smallest positions on the pitch tend to be the midfielders and offensive wing players (CAM, LM, RM, RW, LF, CF, etc.). Again, this makes sense. The midfielders and offensive wing players play in the middle and edges of the pitch. They need to be fast with the ball and be able to deliver crosses into the box. Thus, height is not as crucial as speed is for these positions. 
@@ -182,6 +183,7 @@ all_players_adjusted %>%
     strip.text = element_text(size = 15, face = 'bold')
   )
 ```
+
 We again can see that goalkeepers and defensive players tend to be the tallest. The distribution for each position for the male players appears to be normally distributed. Interestingly, there seems to be some bimodality and uniform distribution of the heights for some of the female player positions. For example, there seems to be two groups of players for the RB position, one who are taller and ones who are shorter. For positions like CAM, RW, ST, and CM, the distribution seems almost uniform, with heights ranging over a 15 or 20 cm range. It seems that the heights of players might not be as crucial of an attribute for the women's game as speed, for example. The women's game is often played more on the ground than in the air, so speed and quickness could be more advantageous than height regardless of the position (except goalkeeper and some defensive positions). 
 
 ## Explaining Player Wages
