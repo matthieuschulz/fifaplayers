@@ -15,7 +15,7 @@ library(ggalluvial)
 
 ### Overall Distribution of Male and Female Heights 
 
-We are first going to look at the overall distribution of players' heights for both male and female. We obviously expect the median height of the men to be larger than the median height of women. For this analysis, we will only use the most recent year of data we have, specifically 2022. 
+We are first going to look at the overall distribution of players' heights for both male and female. We expect the median height of the men to be larger than the median height of women. For this analysis, we will only use the most recent year of data we have, specifically 2022. 
 
 ```{r density_heights}
 # make density plots 
@@ -149,7 +149,7 @@ median_heights %>%
   )
 ```
 
-The Cleveland Dot Plot above provides many interesting insights. First, we can confirm the above conclusion that the male players are taller than the female players. Further, we can see that this is true for every single position. 
+The Cleveland Dot Plot above provides many interesting insights. First, we can confirm the above conclusion that the male players are taller than the female players. Furthermore, we can see that this is true for every single position. 
 
 For both the males and the females, the tallest player on the pitch tends to be the goalkeeper. The goalkeeper is in charge of protecting the net, thus, it makes sense for a goalkeeper to be tall in order to "cover" as much of the goal as possible. We also see that the 2nd, 3rd, and 4th tallest positions for the men are the center back (CB), striker (ST), and center defensive midfielder (CDM). These positions are also among the tallest for the women as well. The tallest players (besides the goalkeeper), tend to be the defensive players (center back (CB), center defensive midfielder (CDM), left back (LB), left wing back (LWB), etc.). This also is in agreement with what we know about football; the defensive players must be able to win headers to protect the goal, which height helps. Strikers are among the only offensive players to have large heights, for both the men and the women. Strikers tend to play in the box, meaning they must compete against the tall defensive players for headers. The smallest positions on the pitch tend to be the midfielders and offensive wing players (CAM, LM, RM, RW, LF, CF, etc.). Again, this makes sense. The midfielders and offensive wing players play in the middle and edges of the pitch. They need to be fast with the ball and be able to deliver crosses into the box. Thus, height is not as crucial as speed is for these positions. 
 
@@ -184,7 +184,7 @@ all_players_adjusted %>%
   )
 ```
 
-We again can see that goalkeepers and defensive players tend to be the tallest. The distribution for each position for the male players appears to be normally distributed. Interestingly, there seems to be some bimodality and uniform distribution of the heights for some of the female player positions. For example, there seems to be two groups of players for the RB position, one who are taller and ones who are shorter. For positions like CAM, RW, ST, and CM, the distribution seems almost uniform, with heights ranging over a 15 or 20 cm range. It seems that the heights of players might not be as crucial of an attribute for the women's game as speed, for example. The women's game is often played more on the ground than in the air, so speed and quickness could be more advantageous than height regardless of the position (except goalkeeper and some defensive positions). 
+We again can see that goalkeepers and defensive players tend to be the tallest. The distribution for each position for the male players appears to be normally distributed. Interestingly, there seems to be some bimodality and uniform distribution of the heights for some of the female player positions. For example, there are two groups of players for the RB position, one who are taller and ones who are shorter. For positions like CAM, RW, ST, and CM, the distribution seems almost uniform, with heights ranging over a 15 or 20 cm range. It looks like the heights of players might not be as crucial of an attribute for the women's game as speed, for example. The women's game is often played more on the ground than in the air, so speed and quickness could be more advantageous than height regardless of the position (except goalkeeper and some defensive positions). 
 
 ## Explaining Player Wages
 
@@ -214,12 +214,12 @@ fig <- plot_ly(
 fig
 ```
 
-We can see from this graph that the wages grow with the overall rating of the player, that sounds natural. On the contrary, the age does not look like having a strong influence on the wages.
+We can see from this graph that the wages grow with the overall rating of the player, that sounds logical. To the contrary, the age does not look like having a strong influence on the wages.
 Now, let's perform a linear regression to compare the influence of each feature.
 
-### Explaining wages by Linear Regression
+### Explaining wages through Linear Regression
 
-We are trying to explain the wages given the data available in the other columns through a linear regression. When done, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
+We are trying to explain the wages given the data available in the other columns through a linear regression. When completed, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
 
 #### Regression 1
 
@@ -245,7 +245,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   theme_linedraw()
 ```
 
-We can see that the club name is clearly the best indicator to estimate the salary of a player. Indeed, clubs like PSG or Manchester City are well known to be extremely rich, because they benefit from the support of a country (Qatar and Saudi Arabia). Therefore, they are able to pay their players a lot, and this seems to have a much higher influence than the actual level of the player.
+We can see that the club name is clearly the best indicator to estimate the salary of a player. Indeed, clubs like PSG or Manchester City are well known to be extremely rich, because they benefit from the support of a country (Qatar and Saudi Arabia) as investors. Therefore, they are able to pay their players a lot, and this seems to have a much higher influence than the actual level of the player.
 Once this observation is done, let's remove the feature "club_name" to observe the influence of the others.
 
 
@@ -270,7 +270,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
 ```
 
 Now, we can observe that features with the highest influence come from "league_name", that is to say the country the player plays in. Indeed, the English Premier League (and the other big european championships) is famous for getting huge amounts of money from broadcasting rights and therefore overpaying its players.
-Once this observation is done, let's remove the feature "league_name" to observe the influence of the others.
+Once this observation is done, let's remove the feature "league_name" to observe the influence of the other features.
 
 #### Regression 3
 
@@ -292,7 +292,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   theme_linedraw()
 ```
 
-Here, we can notice that the position of the player becomes to most important feature. For instance, Center Forwards (CF) are much better paid than Right Defensive Midfielders (RDM), probably because the position is more "spectacular" and televisual. We can also remark that the international reputation is a very important feature to explain the salary. It can be explained by the fact that football is an open competitive market: if a player with a good reputation is not well paid, he is likely to get offers from other clubs and change during the summer.
+Here, we can notice that the position of the player becomes to most important feature. For instance, Center Forwards (CF) are much better paid than Right Defensive Midfielders (RDM), probably because the position is more "spectacular" and marketable (they will sell more jerseys). We can also see that the international reputation is a very important feature to explain the salary. It can be justified by the fact that football is an open competitive market: if a player with a good reputation is not well paid, he is likely to get offers from other clubs and change during the summer.
 Once this observation is done, let's remove the feature "club_position" to observe the influence of the others.
 
 #### Regression 4
@@ -321,9 +321,9 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
 
 Now, we want to identify what features are the most important to predict a players value in the transfer market.
 
-### Explaining values by a simple scatter plot
+### Explaining values through a scatter plot
 
-First, let's have an insight by plotting the values in function of the "overall" rating and his age.
+First, let's have an insight by plotting the values in function of the "overall" rating and their age.
 
 ```{r val_male_22}
 library(plotly)
@@ -343,11 +343,11 @@ fig
 
 ```
 
-We can see from this graph that the values grow with the overall rating of the player, that sounds natural (the more gifted a player, the higher his value). But unlike the wages study, here the age seems to have a strong influence on the values! Indeed, for the same overall rating, younger players clearly have a higher value.
+We can see from this graph that the values grow with the overall rating of the player, that sounds logical (the more gifted a player, the higher his value). But unlike the wages study, here, the age seems to have a strong influence on the values! Indeed, for the same overall rating, younger players clearly have a higher value.
 
 Now, let's perform a linear regression to compare the influence of each feature.
 
-### Explaining values by Linear Regression
+### Explaining values through Linear Regression
 
 We are trying to explain the values given the data available in the other columns through a linear regression. When done, we keep only the 30 most significant coefficients (with the lowest p-value) and we plot them in a Cleveland dot plot to compare them.
 
@@ -375,7 +375,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   theme_linedraw()
 ```
 
-Like for the last study, the club name is the best way to estimate the value of a player. Indeed, it is known that the most prestigious clubs are able to attract the most valuable players.
+Like for the last study, the club name is the best way to estimate the market value of a player. Indeed, it is known that the most prestigious clubs are able to attract the most valuable players.
 Once this observation is done, let's remove the feature "club_name" to observe the influence of the others.
 
 
@@ -444,6 +444,7 @@ ggplot(data=results, aes(x = Estimate, y = fct_reorder(Skill, Estimate)))+
   xlim(-2000000, 2000000)+
   theme_linedraw()
 ```
+
 Finally, we are left with only the pure skills and personality of the player. Once again, the international reputation was important, but we can now observe that ratings like "overall" or "movement_balance" are also good indicators. Finally, your age seems to strongly negatively impact your value, as we explained earlier. 
 
 
@@ -511,7 +512,7 @@ We can indeed conclude that:
 * pca_1 gives a bigger and negative weight to the skills and salary
 * pca_2 gives a bigger weight to height and weight
 
-It is confirmed by a rapid hovering of the graph. The leftmost players (Mbappe, Messi, De Bruyne, Neymar) are known to be very good and very well paid. On the top we have Ruben Dias, Laporte, Van Dijk who are known to be very tall and powerful ; while on the bottom we have Muriel, Insigne or Coman wo are short and fast.
+It is confirmed by a rapid hovering of the graph. The leftmost players (Mbappe, Messi, De Bruyne, Neymar) are known to be very good and very well paid. On the top we have Ruben Dias, Laporte, Van Dijk who are known to be very tall and powerful; while on the bottom we have Muriel, Insigne or Coman who are short and fast.
 
 
 ## Where are the best players from ?
@@ -543,11 +544,11 @@ hcmap(
 
 ```
 
-We can see that Brazil, Argentina, Spain, France and Germany are the most represented countries, with around 1000 players each. But even though it is not the national sport, there are about 400 Americans and Chinese present in the game! On the contrary, football is very popular in Africa, but very few African players are represented. It is probably because the African leagues are not yet in the game.
+We can see that Brazil, Argentina, Spain, France and Germany are the most represented countries, with around 1000 players each. But even though it is not the national sport, there are about 400 Americans and Chinese present in the game! To the contrary, football is very popular in Africa, but very few African players are represented. It is probably because the African leagues are not yet in the game.
 
 ### Top 1000 players
 
-It may be interesting to see if the countries with the most players are also the countries with the best players. For this purpose, we plot the same chart, but with only the 1000 players with the highest overall ranking. 
+It may be interesting to see if the countries with the most players are also the countries with the best players. For this purpose, we plot the same chart, but only with the 1000 players with the highest overall ranking. 
 
 ```{r mapchart2}
 
@@ -613,7 +614,7 @@ all_players_new %>%
   )
 ```
 
-We can clearly see that the average male player is makes more than the average female player. The distribution of female annual salaries is heavily skewed to the right whereas much less for men. The distribution also shows that some men tend to make extremely high amounts of money (although this is only restrained to the best players) whereas not all at all for women.
+We can clearly see that the average male player is makes more than the average female player. The distribution of female annual salaries is heavily skewed to the right whereas much less for men. The distribution also shows that some men tend to make extremely high amounts of money (although this is only restrained to the best players) whereas not all at all for women, suggesting real salary inequalities.
 
 
 ### Key Statistics Comparison of Annual Wage for Male and Female Players
@@ -653,7 +654,7 @@ paste0('Min Female Player Salary: ', min_female, ' €')
 
 ```
 
-From the key statistics above, we can see how significant the differences are between women and men in terms of salaries... Although the minimum annual wages are the same for both men and women, the maximum women player annual salary is half the amount of the median of male annual salaries. Lastly, the highest paid male in the game is paid close to 30M€ annually, more than 300 times what the highest paid female receives (104k€). This difference clearly needs to be reduced...
+From the key statistics above, we can see how significant the differences are between women and men in terms of salaries... Although the minimum annual wages are the same for both men and women, the maximum women player annual salary is half the amount of the median of male annual salaries. Lastly, the highest paid male in the game is paid close to 30M€ annually, more than 300 times what the highest paid female receives (104k€). This difference clearly needs to be reduced.
 
 ### Median Player Salaries per Position  
 

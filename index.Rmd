@@ -11,7 +11,7 @@ Football is the most popular sport in the world. As football fans ourselves and 
 
 FIFA, a video game franchise, allows one to simulate football matches (on PS5 and Xbox among others), provides rankings of players and their attributes. The game is released annually by Electronic Arts (EA), with updated players and statistics, is a fan favorite among sports video games. Unsurprisingly, FIFA is the highest-selling sports video game, selling 260 million copies as of 2022 (the next highest is Madden, with over 130 million copies sold) ([source](<https://www.rookieroad.com/sports/top-10-sports-video-games/>)). 
 
-While specific ratings are not available in the real world of football, using the data from the FIFA video games allows us to analyze players and their skills in a more quantitative, rather than qualitative, way. The tremendous interest in football worldwide makes this a fascinating topic with a plethora of insights to uncover. 
+While specific ratings are not available in the real world of football, using the data from the FIFA video games allows us to analyze players and their skills in a more quantitative, rather than qualitative way. The tremendous interest in football worldwide makes this a fascinating topic with a plethora of insights to uncover. 
 
 
 
