@@ -1,116 +1,163 @@
-# Interactive component
+# Interactive Component 
 
+<script src="https://d3js.org/d3.v7.js"></script>
 
-
+<p>We are going to look at the age distribution of the males and female players in the year 2022. In order to look at the age distribution of the other gender, simply click on the radio button below!</p>
 
 <p>Select a gender</p>
-<input type="radio" id="male" name="gender" value="male" checked>
+<input type="radio" id="male" name="gender" value="Male" checked>
 <label for="male">Male</label><br>
-<input type="radio" id="female" name="gender" value="female">
+<input type="radio" id="female" name="gender" value="Female">
 <label for="female">Female</label><br>
 
+<div id="plot"></div>
 
-<p>Select a year</p>
-<input type="radio" id="16" name="year" value="16">
-<label for="16">2016</label><br>
-<input type="radio" id="17" name="year" value="17">
-<label for="17">2017</label><br>
-<input type="radio" id="18" name="year" value="18">
-<label for="18">2018</label><br>
-<input type="radio" id="19" name="year" value="19">
-<label for="19">2019</label><br>
-<input type="radio" id="20" name="year" value="20">
-<label for="20">2020</label><br>
-<input type="radio" id="21" name="year" value="21">
-<label for="21">2021</label><br>
-<input type="radio" id="22" name="year" value="22" checked>
-<label for="22">2022</label><br>
+<p>We can see that the majority of male playrs in the year 2022 are less than 25 years old. A lot of the most exciting players in the game (i.e. Mbappé, Alphonso Davies, Phil Foden, etc.) are less than 25 years old. This is not surprising since players begin attending soccer academies before they are even 10 years old. The game is built around speed and quickness, and young legs tend to dominate in these areas. We see that there are very few players over 30 (Messi and Ronaldo being two of them). While a few veterans that can supply leadership (especially in the international game) are cherished on every team, they are usually surrounded by younger, more lively players. 
 
+Interestingly, we see that the most populated age group for the women is 25-30. Like the men, there are very few female soccer players that are above the age of 30, and quite a few that are younger than 25. Like we mentioned earlier, the women's game is often more cerebral, possibly contributing to the differences we see from the men. There are plenty of star female players that are young and spry, even between the ages of 25-30. Some examples include Fridolina Rolfo, Lucy Bronze, Lindsey Horan, and Sam Kerr. There is often more money poured into the male game (unfortunately), so women might not begin training as early. All in all, it seems that women become better with time, reaching their most dominant in their late 20s. This is slightly different from the men's game, where young legs dominate the pitch.
 
-<h3 id="graph_title">Distribution of the ages of the players</h3>
-
-<svg id="my_dataviz">
-</svg>
-
-
-<script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
+  
+const w = 600; 
+const h = 400; 
+const margin = {top: 50, 
+  right: 0, 
+  bottom: 45, 
+  left: 55};
 
-const height = 500;
-const width = 800;
+const innerWidth = w - margin.left - margin.right; 
+const innerHeight = h - margin.top - margin.bottom; 
 
-const svg = d3.select("#my_dataviz")
-  .attr("width", width)
-  .attr("height", height);
 
 // dataset
 
-const dataset = {
-  "male": {
-    16: [0.574, 0.294, 0.119, 0.013],
-    17: [0.567, 0.295, 0.122, 0.015],
-    18: [0.561, 0.297, 0.127, 0.015],
-    19: [0.547, 0.308, 0.128, 0.017],
-    20: [0.543, 0.304, 0.136, 0.016],
-    21: [0.549, 0.303, 0.129, 0.019],
-    22: [0.557, 0.291, 0.132, 0.020],
-  },
-  "female": {
-    16: [0.472, 0.391, 0.109, 0.028],
-    17: [0.485, 0.378, 0.124, 0.013],
-    18: [0.517, 0.363, 0.110, 0.009],
-    19: [0.488, 0.395, 0.114, 0.003],
-    20: [0.397, 0.429, 0.159, 0.014],
-    21: [0.365, 0.461, 0.145, 0.029],
-    22: [0.358, 0.442, 0.171, 0.028],
-  }
-};
+const male_data = [{age: "<25", value: 0.557}, 
+  {age: "25-30", value: 0.291}, 
+  {age: "30-35", value: 0.132}, 
+  {age: ">35", value: 0.020}];
 
-update();
-
-d3.selectAll("input")
-    .on("change", function () {update()});
-
-function update() {
-  const gender = d3.select('input[name="gender"]:checked').property("value");
-  const year = +d3.select('input[name="year"]:checked').property("value");
-  const true_year = 2000 + year;
+const female_data = [
+  {age: "<25", value: 0.358}, 
+  {age: "25-30", value: 0.442}, 
+  {age: "30-35", value: 0.171}, 
+  {age: ">35", value: 0.029}];
   
-  const txt = "Distribution of the ages of the " + gender + " players" + " in " + true_year.toString();
-  d3.select("#graph_title").text(txt);
+
+const xScale = d3.scaleBand()
+  .domain(male_data.map(d => d.age))
+  .range([0, innerWidth])
+  .paddingInner(0.1);
   
-  const data = {age:["<25", "25 to 30", "30 to 35", ">35"], value: dataset[gender][year]};
+const yScale = d3.scaleLinear()
+  .domain([0, 1])
+  .range([innerHeight, 0]);
+  
+const xAxis = d3.axisBottom()
+  .scale(xScale);
+  
+const yAxis = d3.axisLeft()
+  .scale(yScale);
+  
+// add svg 
+  
+const svg = d3.select('div#plot')
+  .append('svg')
+  .attr('width', w)
+  .attr('height', h);
+    
+// add background rectangle
 
-  // add the rectangles
-  const rects = svg
-    .selectAll("rect")
-    .data(data.value);
+svg.append('rect')
+  .attr('x', 0)
+  .attr('y', 0)
+  .attr('width', w)
+  .attr('height', h)
+  .attr('fill', 'aliceblue');
+    
+const bars = svg.append('g') 
+  .attr('id', 'plot')
+  .attr('transform', `translate (${margin.left}, ${margin.top})`)
+  .selectAll('rect')
+  .data(male_data);
+    
+bars.enter().append('rect')
+  .attr('x', d => xScale(d.age))
+  .attr('y', d => yScale(d.value))
+  .attr('width', xScale.bandwidth())
+  .attr('height', d => innerHeight - yScale(d.value))
+  .attr('fill', 'lightgreen');
+    
+// add axes 
 
-  rects.enter()
-    .append("rect")
-    .merge(rects)
-      .attr("x", (d,i) => 100*(i+1))
-      .attr("y", 60)
-      .attr("width", 50)
-      .attr("height", (d,i) => height*d)
-      .attr("fill", "#69b3a2");
-      
-  // add the labels
-  const labels = svg
-    .selectAll("text")
-    .data(data.age);
+svg.append('g') 
+  .attr('class', 'xAxis')
+  .attr('transform', `translate (${margin.left}, ${h - margin.bottom})`)
+  .call(xAxis);
+    
+svg.append('g')
+  .attr('class', 'yAxis')
+  .attr('transform', `translate (${margin.left}, ${margin.top})`)
+  .call(yAxis);
+  
+// add labels 
 
-  labels.enter()
-    .append("g")
-      .append("text")
-      .merge(labels)
-        .attr("x", (d,i) => 100*(i+1))
-        .attr("y", 30)
-        .text(d => d)
-        .attr("fill", "black")
-        .attr("text-anchor", "start");
+  svg.append('g')
+    .attr('id', 'xlabel')
+    .append('text')
+    .attr('x', 282.5)
+    .attr('y', 390)
+    .text('Player Age')
+    .attr('fill', 'black')
+    
+  svg.append('g')
+    .attr('id', 'ylabel')
+    .append('text')
+    .attr("transform", "translate(20,240) rotate(270)")
+    .text('Fraction of Players')
+    .attr('fill', 'black');
+    
+  svg.append('g')
+    .attr('id', 'title')
+    .append('text')
+    .attr('x', 82)
+    .attr('y', 20)
+    .attr('transform', 'scale(1.5)')
+    .text('Proportion of Male Players by Age')
+    .attr('fill', 'black')
+    
+  d3.selectAll('input')
+    .on('click', function(event) {
+      var gender = event.currentTarget.value;
+      d3.select('g#title')
+        .select('text')
+        .text(`Proportion of ${gender} Players by Age`);
         
-}
-
+      if (gender == 'Female') {
+      
+        d3.select('g#plot').selectAll('rect')
+          .data(female_data)
+          .attr('x', d => xScale(d.age))
+          .attr('y', d => yScale(d.value))
+          .attr('width', xScale.bandwidth())
+          .attr('height', d => innerHeight - yScale(d.value))
+          .attr('fill', 'lightgreen');
+      }
+      
+      if (gender == 'Male') {
+      
+        d3.select('g#plot').selectAll('rect')
+          .data(male_data)
+          .attr('x', d => xScale(d.age))
+          .attr('y', d => yScale(d.value))
+          .attr('width', xScale.bandwidth())
+          .attr('height', d => innerHeight - yScale(d.value))
+          .attr('fill', 'lightgreen');
+      }
+        
+  });
+  
+  
+    
+    
 
 </script>
