@@ -214,6 +214,8 @@ fig <- plot_ly(
 fig
 ```
 
+*Remark : * Plotly seems not to work online, so here is an image of what is supposed to appear: ![alt_text](img/wages.PNG)
+
 We can see from this graph that the wages grow with the overall rating of the player, that sounds natural. On the contrary, the age does not look like having a strong influence on the wages.
 Now, let's perform a linear regression to compare the influence of each feature.
 
@@ -382,6 +384,8 @@ fig <- plot_ly(
 fig
 
 ```
+
+*Remark : * Plotly seems not to work online, so here is an image of what is supposed to appear: ![alt_text](img/values.PNG)
 
 We can see from this graph that the values grow with the overall rating of the player, that sounds natural (the more gifted a player, the higher his value). But unlike the wages study, here the age seems to have a strong influence on the values! Indeed, for the same overall rating, younger players clearly have a higher value.
 
@@ -558,6 +562,8 @@ fig <- plot_ly(
 fig
 ```
 
+*Remark : * Plotly seems not to work online, so here is an image of what is supposed to appear: ![alt_text](img/clustering.PNG)
+
 We can see that the clusters are very well separated in the pricipal components plane (explaining 70% of the variance). By hovering a little bit, we realize that the well-known players are in the leftmost cluster (number 3). Probably the left-to-right vector (pca_1) conveys the meaning of "fame" or "talent". Let's have a look on the centroids of the clusters to be sure.
 
 ```{r centroids}
@@ -623,6 +629,8 @@ hcmap(
 
 ```
 
+*Remark : * Highcharter seems not to work online, so here is an image of what is supposed to appear: ![alt_text](img/map1.PNG)
+
 We can see that Brazil, Argentina, Spain, France and Germany are the most represented countries, with around 1000 players each. But even though it is not the national sport, there are about 400 Americans and Chinese present in the game! On the contrary, football is very popular in Africa, but very few African players are represented. It is probably because the African leagues are not yet in the game.
 
 ### Top 1000 players
@@ -650,6 +658,8 @@ hcmap(
   hc_title(text = "Origin of the top 1000 male players in FIFA22")
 
 ```
+
+*Remark : * Highcharter seems not to work online, so here is an image of what is supposed to appear: ![alt_text](img/map2.PNG)
 
 We can see that Spain is by far the best country in 2022, followed by Brazil, Argentina and France. It is interesting to highlight that although Germany had 4 times the number of Italian players represented in FIFA (1200 VS 300), they both have approximately 50 players in the top 1000. Same remark for USA VS Canada.
 
