@@ -23,7 +23,7 @@
 <meta name="author" content="Matthieu Schulz, Hugo Ginoux, Ryan McNamara" />
 
 
-<meta name="date" content="2022-12-13" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -221,6 +221,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.5.1" data-path="results.html"><a href="results.html#all-the-players"><i class="fa fa-check"></i><b>4.5.1</b> All the players</a></li>
 <li class="chapter" data-level="4.5.2" data-path="results.html"><a href="results.html#top-1000-players"><i class="fa fa-check"></i><b>4.5.2</b> Top 1000 players</a></li>
 </ul></li>
+<li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#analysis-of-male-vs-female-salaries"><i class="fa fa-check"></i><b>4.6</b> Analysis of Male vs Female Salaries</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="results.html"><a href="results.html#overall-distribution-of-male-and-female-salaries"><i class="fa fa-check"></i><b>4.6.1</b> Overall Distribution of Male and Female Salaries</a></li>
+<li class="chapter" data-level="4.6.2" data-path="results.html"><a href="results.html#key-statistics-comparison-of-annual-wage-for-male-and-female-players"><i class="fa fa-check"></i><b>4.6.2</b> Key Statistics Comparison of Annual Wage for Male and Female Players</a></li>
+<li class="chapter" data-level="4.6.3" data-path="results.html"><a href="results.html#median-player-salaries-per-position"><i class="fa fa-check"></i><b>4.6.3</b> Median Player Salaries per Position</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
 <li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
@@ -247,13 +253,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 3</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single dataframe.</p>
-=======
-<p>The dataset is under the form of 1 csv per year and per gender. We want to load everything, and merge them into a single data.frame.</p>
->>>>>>> b0272877face21c11ce5805705be4bacf51de0a6
-=======
 <p>For this project, we will be using the following FIFA datasets: <a href="https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/" class="uri">https://sports-statistics.com/soccerl/fifa-2022-dataset-csvs/</a></p>
 <p>Electronic Arts Website: <a href="https://www.ea.com/sports" class="uri">https://www.ea.com/sports</a></p>
 <p>Every year, Electronic Arts releases a new version of the FIFA video game (i.e. FIFA 21 for 2021, FIFA 22 for 2022, etc.). Every year, the attributes and statistics of current players are updated and reevaluated, which keeps the game current. The origin of the data that we are working with is the Electronic Arts company, which determines the ratings of the teams and players when they design the newest release of the game. We are collecting our data from a website called sports-statistics.com. The website is a collection of sports analysts which collect video game/sports data to post online so interested fans can analyze and extract insights from it. Specifically, our dataset was created by Thomas Nielson, a writer for the website. The author collected the data from a website called <a href="sofifa.com">sofifa.com</a>, which is a website that keeps track of all of the players attributes/statistics with every release of the FIFA video game. The data that we’ve collected is scraped directly off of this website with minimal preprocessing/cleaning.</p>
@@ -320,7 +319,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-4"><a href="data.html#cb3-4" aria-hidden="true" tabindex="-1"></a>all_players <span class="ot">=</span> <span class="fu">rbind</span>(female_players, male_players)</span>
 <span id="cb3-5"><a href="data.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="data.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(all_players)</span></code></pre></div>
->>>>>>> 0f265df42bb64aec16b81d62c900991b7b56be6a
 <pre><code>##   sofifa_id                                                 player_url
 ## 1    226324        https://sofifa.com/player/226324/carli-lloyd/160002
 ## 2    226328      https://sofifa.com/player/226328/megan-rapinoe/160002
@@ -527,7 +525,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-21"><a href="data.html#cb5-21" aria-hidden="true" tabindex="-1"></a>    male_22[,col]<span class="ot">=</span><span class="fu">clean_col</span>(male_22, col)</span>
 <span id="cb5-22"><a href="data.html#cb5-22" aria-hidden="true" tabindex="-1"></a>    fem_22[,col]<span class="ot">=</span><span class="fu">clean_col</span>(fem_22, col)</span>
 <span id="cb5-23"><a href="data.html#cb5-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use “select” to grab the ones that are necessary for our later analyses.</p>
+<p>Lastly, there is some data cleaning/transformation that we will do as we go through the analysis. For example, since players often play multiple positions, their positions played are comma separated within the same cell. When we analyze characteristics of specific positions, we will separate each of these positions to be included in their own unique row. Since that will cause duplication of a lot of players, we neglect to do that here and only perform the cleaning operation when it is needed within the analysis. We also will leave all of the columns of the dataset intact, rather than removing some of them now, and will use “select” to grab the ones that are necessary for our later analysis.</p>
 </div>
 <div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -644,8 +642,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                           0                           0 
 ##                release_year                      gender 
 ##                           0                           0</code></pre>
-<p>We see that we have a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis.</p>
-<p>We can’t visualize these missing values with a heatmap because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead.</p>
+<p>There are a lot of missing values for columns such as nation_team_id, nation_jersey_number, goalkeeping_speed, etc. These are because we have players that do not play for the national team or that do not goalkeep, so they have no values for these variables. This is not a big deal, we will not be using these variables in our analysis.</p>
+<p>We can’t visualize these missing values with a heat map because we have too many samples (players) in our dataset. We will plot the percentage of missing values for each column that has missing values instead.</p>
 <p><img src="finalproj_files/figure-html/missing_val_hm-1.png" width="672" /></p>
 <p>We see that we have a lot of missing values for <strong>nation_jersey_number</strong>, <strong>nation_team_id</strong>, and <strong>goalkeeping_speed</strong>. We discussed these missing values above. We also have some missing values for other attributes such as <strong>defending</strong>, <strong>dribbling</strong>, <strong>pace</strong>, etc. This is because some players are not given certain ratings, usually because they do not do those things (i.e. goalkeeping). Some of these values might also be missing because they were not attributes in the earlier years of the game. Either way, we will pay close attention to these missing values if we are going to be using these variables for our analysis.</p>
 <p>Let’s see if there are any missing patterns in the data. We will remove columns that are missing less than 20% of their values (since it is impossible to see what is going on with so many variables).</p>
