@@ -641,13 +641,15 @@ names(number_of_players_per_nation) = c('nation', 'count')
 levels(number_of_players_per_nation$nation)[match('United States', levels(number_of_players_per_nation$nation))] = 'United States of America'
 levels(number_of_players_per_nation$nation)[match('China PR', levels(number_of_players_per_nation$nation))] = 'China'
 
-hcmap(
+map_temp = hcmap(
   "custom/world",
   data = number_of_players_per_nation,
   value = "count",
   joinBy = c("name", "nation")
 ) %>%
   hc_title(text = "Origin of the top 1000 male players in FIFA22")
+
+print(map_temp)
 
 ```
 
